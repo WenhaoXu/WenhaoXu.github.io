@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Howells Blog</title>
+  <title>spring源码学习之spring core （一） | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howells Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
+<meta name="keywords" content="Spring Ioc SpringCore">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring源码学习之spring core （一）">
+<meta property="og:url" content="http://yoursite.com/2018/11/20/spring-core/index.html">
 <meta property="og:site_name" content="Howells Blog">
+<meta property="og:description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-23T03:29:13.847Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Howells Blog">
+<meta name="twitter:title" content="spring源码学习之spring core （一）">
+<meta name="twitter:description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -156,16 +161,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-spring-core" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+            <article id="post-spring-core" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/20/spring-core/">spring源码学习之spring core （一）</a>
+    <h1 class="article-title" itemprop="name">
+      spring源码学习之spring core （一）
     </h1>
   
 
@@ -179,9 +182,72 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过<a href="https://docs.spring.io/spring/docs/5.1.2.BUILD-SNAPSHOT/spring-framework-reference/index.html" title="spring 官方文档" target="_blank" rel="noopener">spring 官方文档</a>以及github上<a href="https://github.com/seaswalker/Spring" title="seawalker的学习文档" target="_blank" rel="noopener">seawalker的学习文档</a>来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。<br>Core Container(核心容器)包含有Core、Beans、Context和Expression Language模块。</p>
-        
-          <a class="article-more-a" href="/2018/11/20/spring-core/#more">more >></a>
-        
+<a id="more"></a>
+<ul>
+<li>Core模块主要包含Spring框架基本的核心工具类</li>
+</ul>
+<ul>
+<li>Beans模块是所有应用都要用到的，它包含访问配置文件、创建和管理bean以及进行Inversion of<br>Control/Dependency Injection(Ioc/DI)操作相关的所有类</li>
+</ul>
+<ul>
+<li>Context模块构建于Core和Beans模块基础之上，提供了一种类似于JNDI注册器的框架式的对象访问方法。Context模块继承了Beans的特性，为Spring核心提供了大量扩展，添加了对国际化(如资源绑定)、事件传播、资源加载和对Context的透明创建的支持。ApplicationContext接口是Context模块的关键</li>
+</ul>
+<ul>
+<li>Expression Language模块提供了一个强大的表达式语言用于在运行时查询和操纵对象，该语言支持设置/获取属性的值，属性的分配，方法的调用，访问数组上下文、容器和索引器、逻辑和算术运算符、命名变量以及从Spring的IoC容器中根据名称检索对象</li>
+</ul>
+<hr>
+<h2 id="IOC容器"><a href="#IOC容器" class="headerlink" title="IOC容器"></a>IOC容器</h2><p>提到spring，第一印象应该就是IOC（Inversion of Control ）和AOP。IOC是一种解决对象之间创建的思想，一种方法。将创建对象的权利由传统的new 方式转到由容器来创建，然后根据需要注入到实体中。实现IOC的有两种方式：DI和DL。</p>
+<blockquote>
+<p>《EXPERT ONE ON ONE J2EE DEVELOPMENT WITHOUT EJB》第6章：<br>IoC主要的实现方式有两种：依赖查找，依赖注入。(128页)<br>依赖注入是一种更可取的方式。(130页)</p>
+</blockquote>
+<p>DI是由IOC容器注入到实体中。DL是实体主动是某个服务注册地查找其依赖的那些服务。spring只是选择了DI来实现IOC。有些人可能会把它与依赖注入相提并论，但是它们还是有些区别。</p>
+<p>org.springframework.beans和org.springframework.context包是Spring框架的IoC容器的基础。org.springframework.beans.factory下的BeanFactory提供了一个管理任何对象的高级配置机制。org.springframework.context下的 ApplicationContext是BeanFactory的子接口。它除了BeanFactory的功能之外，还提供更多的企业特定功能。ApplicationContext同时也是代表IOC容器。它负责实例化，配置和组装bean。容器通过读取配置元数据获取有关要实例化，配置和组装的对象的指令。配置元数据以XML，Java注释或Java代码表示。它允许您表达组成应用程序的对象以及这些对象之间丰富的相互依赖性。</p>
+<p>ApplicationContext接口提供几种实现，一般会创建一个ClassPathXmlApplicationContext 或的实例 FileSystemXmlApplicationContext。虽然XML是定义配置元数据的传统格式，但您可以通过提供少量XML配置来声明容器使用Java注释或代码作为元数据格式，以声明方式启用对这些其他元数据格式的支持。</p>
+<p>在大多数应用程序方案中，不需要显式用户代码来实例化Spring IoC容器的一个或多个实例。例如，在Web应用程序场景中，应用程序文件中的简单八行（左右）样板Web描述符XML web.xml通常就足够了。</p>
+<pre><code>&lt;context-param&gt;
+&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+&lt;param-value&gt;/WEB-INF/daoContext.xml /WEB-INF/applicationContext.xml&lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</code></pre><h3 id="配置元数据"><a href="#配置元数据" class="headerlink" title="配置元数据"></a>配置元数据</h3><p>spring IOC容器通过一种元数据配置，此配置元数据表示您作为应用程序开发人员如何告诉Spring容器在应用程序中实例化，配置和组装对象。<br>spring 元数据配置有这么几种：</p>
+<ol>
+<li>XML配置，这也是最早的配置。基于XML的配置元数据将这些bean配置为<bean>顶级元素内的<beans>元素。</beans></bean></li>
+<li>注释配置。Spring 2.5引入了对基于注释的配置元数据的支持。</li>
+<li>Java配置。从Spring 3.0开始，Spring JavaConfig项目提供的许多功能成为核心Spring Framework的一部分。因此，您可以使用Java而不是XML文件在应用程序类外部定义bean。要使用这些新功能，请参阅 @Configuration， @Bean， @Import，和@DependsOn注释。</li>
+</ol>
+<p>这些bean定义对应于构成应用程序的实际对象。通常，您定义服务层对象，数据访问对象（DAO），表示对象（如Struts Action实例），基础结构对象（如Hibernate SessionFactories，JMS Queues等）。通常，不会在容器中配置细粒度域对象，因为创建和加载域对象通常由DAO和业务逻辑负责。但是，可以使用Spring与AspectJ的集成来配置在IoC容器控制之外创建的对象。</p>
+<h3 id="实例化容器"><a href="#实例化容器" class="headerlink" title="实例化容器"></a>实例化容器</h3><p>提供给ApplicationContext构造函数的位置路径是资源字符串，它允许容器从各种外部资源（如本地文件系统，Java等）加载配置元数据CLASSPATH。</p>
+<pre><code>ApplicationContext context = new ClassPathXmlApplicationContext(&quot;services.xml&quot;, &quot;daos.xml&quot;);//里面的就是我们自己的元数据配置。
+</code></pre><p>配置文件一般放在Resource文件夹下，Spring Resource，它提供了一种从URI语法中定义的位置读取InputStream的便捷机制。特别是， Resource路径用于构建应用程序上下文。这个我会再后面的文章里讲述。</p>
+<p>上面讲的是xml式的配置，还有一种groovy Bean。 bean定义也可以在Spring的Groovy<br>Bean定义DSL中表示，如Grails框架中所知。通常，此类配置位于“.groovy”文件中，此配置样式在很大程度上等同于XML bean定义，甚至支持Spring的XML配置命名空间。它还允许通过importBeans指令导入XML bean定义文件。</p>
+<pre><code>beans {
+        dataSource(BasicDataSource) {
+            driverClassName = &quot;org.hsqldb.jdbcDriver&quot;
+            url = &quot;jdbc:hsqldb:mem:grailsDB&quot;
+            username = &quot;sa&quot;
+            password = &quot;&quot;
+            settings = [mynew:&quot;setting&quot;]
+        }
+        sessionFactory(SessionFactory) {
+            dataSource = dataSource
+        }
+        myService(MyService) {
+            nestedBean = { AnotherBean bean -&gt;
+                dataSource = dataSource
+            }
+        }
+}
+</code></pre><h3 id="使用IOC容器"><a href="#使用IOC容器" class="headerlink" title="使用IOC容器"></a>使用IOC容器</h3><p>ApplicationContext是高级工厂的接口，能够维护不同bean及其依赖项的注册表。通过使用该方法T getBean(String name, Class<t> requiredType)，T getBean( Class<t> requiredType)，可以检索Bean的实例。</t></t></p>
+<pre><code>ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;config.xml&quot;);
+SimpleBean bean = context.getBean(SimpleBean.class);
+bean.send();
+context.close();
+</code></pre><p>该ApplicationContext 接口还有一些其他方法可以检索bean，但理想情况下，应用程序代码永远不应该使用它们。实际上，您的应用程序代码根本不应该调用该 getBean()方法，因此根本不依赖于Spring API。例如，Spring与Web框架的集成为各种Web框架组件（如控制器和JSF托管bean）提供依赖注入，允许您通过元数据（例如自动装配注释）声明对特定bean的依赖性。</p>
+<p>这篇文章主要介绍了spring IOC的相关知识，下一篇会将Bean相关的概念。To be continue !!! </p>
+<h2 id="END-！"><a href="#END-！" class="headerlink" title="END ！"></a>END ！</h2>
       
 
       
@@ -203,16 +269,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/20/spring-core/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/11/20/spring-core/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/19/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -232,87 +357,14 @@
 
 
 
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/19/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2018/11/19/hello-world/" class="archive-article-date">
-  	<time datetime="2018-11-19T01:31:38.271Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2018/11/19/hello-world/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">hello</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/19/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+
   
 
 
@@ -335,8 +387,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
