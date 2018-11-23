@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-23T03:42:01.196Z">
+<meta property="og:updated_time" content="2018-11-23T03:47:10.454Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码学习之spring core （一）">
 <meta name="twitter:description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
@@ -222,7 +222,7 @@
 <h3 id="实例化容器"><a href="#实例化容器" class="headerlink" title="实例化容器"></a>实例化容器</h3><p>提供给ApplicationContext构造函数的位置路径是资源字符串，它允许容器从各种外部资源（如本地文件系统，Java等）加载配置元数据CLASSPATH。</p>
 <pre><code>ApplicationContext context = new ClassPathXmlApplicationContext(&quot;services.xml&quot;, &quot;daos.xml&quot;);//里面的就是我们自己的元数据配置。
 </code></pre><p>配置文件一般放在Resource文件夹下，Spring Resource，它提供了一种从URI语法中定义的位置读取InputStream的便捷机制。特别是， Resource路径用于构建应用程序上下文。这个我会再后面的文章里讲述。</p>
-<p>上面讲的是xml式的配置，还有一种groovy Bean。 bean定义也可以在Spring的Groovy<br>Bean定义DSL中表示，如Grails框架中所知。通常，此类配置位于“.groovy”文件中，此配置样式在很大程度上等同于XML bean定义，甚至支持Spring的XML配置命名空间。它还允许通过importBeans指令导入XML bean定义文件。</p>
+<p>上面讲的是xml式的配置，还有一种groovy Bean。 bean定义也可以在Spring的Groovy Bean定义DSL中表示，如Grails框架中所知。通常，此类配置位于“.groovy”文件中，此配置样式在很大程度上等同于XML bean定义，甚至支持Spring的XML配置命名空间。它还允许通过importBeans指令导入XML bean定义文件。</p>
 <pre><code>beans {
         dataSource(BasicDataSource) {
             driverClassName = &quot;org.hsqldb.jdbcDriver&quot;
