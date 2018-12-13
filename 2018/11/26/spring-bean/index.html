@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Spring源码学习之spring core （一） | Howells Blog</title>
+  <title>Spring源码学习之spring core （二） | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
+  <meta name="description" content="简述在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。">
 <meta name="keywords" content="Spring,Ioc,learn">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring源码学习之spring core （一）">
-<meta property="og:url" content="http://yoursite.com/2018/11/20/spring-core/index.html">
+<meta property="og:title" content="Spring源码学习之spring core （二）">
+<meta property="og:url" content="http://yoursite.com/2018/11/26/spring-bean/index.html">
 <meta property="og:site_name" content="Howells Blog">
-<meta property="og:description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
+<meta property="og:description" content="简述在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-28T07:24:03.859Z">
+<meta property="og:updated_time" content="2018-12-13T05:42:28.427Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring源码学习之spring core （一）">
-<meta name="twitter:description" content="简述spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过spring 官方文档以及github上seawalker的学习文档来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。Core Container(核心容器)包含有Core、Beans、">
+<meta name="twitter:title" content="Spring源码学习之spring core （二）">
+<meta name="twitter:description" content="简述在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -161,69 +161,46 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-spring-core" class="article article-type-post " itemscope="" itemprop="blogPost">
+            <article id="post-spring-bean" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Spring源码学习之spring core （一）
+      Spring源码学习之spring core （二）
     </h1>
   
 
         
-        <a href="/2018/11/20/spring-core/" class="archive-article-date">
-  	<time datetime="2018-11-20T01:35:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-20</time>
+        <a href="/2018/11/26/spring-bean/" class="archive-article-date">
+  	<time datetime="2018-11-26T02:31:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过<a href="https://docs.spring.io/spring/docs/5.1.2.BUILD-SNAPSHOT/spring-framework-reference/index.html" title="spring 官方文档" target="_blank" rel="noopener">spring 官方文档</a>以及github上<a href="https://github.com/seaswalker/Spring" title="seawalker的学习文档" target="_blank" rel="noopener">seawalker的学习文档</a>来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。<br>Core Container(核心容器)包含有Core、Beans、Context和Expression Language模块。</p>
-<a id="more"></a>
-<ul>
-<li>Core模块主要包含Spring框架基本的核心工具类</li>
-</ul>
-<ul>
-<li>Beans模块是所有应用都要用到的，它包含访问配置文件、创建和管理bean以及进行Inversion of Control/Dependency Injection(Ioc/DI)操作相关的所有类</li>
-</ul>
-<ul>
-<li>Context模块构建于Core和Beans模块基础之上，提供了一种类似于JNDI注册器的框架式的对象访问方法。Context模块继承了Beans的特性，为Spring核心提供了大量扩展，添加了对国际化(如资源绑定)、事件传播、资源加载和对Context的透明创建的支持。ApplicationContext接口是Context模块的关键</li>
-</ul>
-<ul>
-<li>Expression Language模块提供了一个强大的表达式语言用于在运行时查询和操纵对象，该语言支持设置/获取属性的值，属性的分配，方法的调用，访问数组上下文、容器和索引器、逻辑和算术运算符、命名变量以及从Spring的IoC容器中根据名称检索对象</li>
-</ul>
+        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。<br><a id="more"></a></p>
 <hr>
-<h2 id="IOC容器"><a href="#IOC容器" class="headerlink" title="IOC容器"></a>IOC容器</h2><p>提到spring，第一印象应该就是IOC（Inversion of Control ）和AOP。IOC是一种解决对象之间创建的思想，一种方法。将创建对象的权利由传统的new 方式转到由容器来创建，然后根据需要注入到实体中。实现IOC的有两种方式：DI和DL。</p>
-<blockquote>
-<p>《EXPERT ONE ON ONE J2EE DEVELOPMENT WITHOUT EJB》第6章：<br>IoC主要的实现方式有两种：依赖查找，依赖注入。(128页)<br>依赖注入是一种更可取的方式。(130页)</p>
-</blockquote>
-<p>DI是由IOC容器注入到实体中。DL是实体主动是某个服务注册地查找其依赖的那些服务。spring只是选择了DI来实现IOC。有些人可能会把它与依赖注入相提并论，但是它们还是有些区别。</p>
-<p>org.springframework.beans和org.springframework.context包是Spring框架的IoC容器的基础。org.springframework.beans.factory下的BeanFactory提供了一个管理任何对象的高级配置机制。org.springframework.context下的 ApplicationContext是BeanFactory的子接口。它除了BeanFactory的功能之外，还提供更多的企业特定功能。ApplicationContext同时也是代表IOC容器。它负责实例化，配置和组装bean。容器通过读取配置元数据获取有关要实例化，配置和组装的对象的指令。配置元数据以XML，Java注释或Java代码表示。它允许您表达组成应用程序的对象以及这些对象之间丰富的相互依赖性。</p>
-<p>ApplicationContext接口提供几种实现，一般会创建一个ClassPathXmlApplicationContext 或的实例 FileSystemXmlApplicationContext。虽然XML是定义配置元数据的传统格式，但您可以通过提供少量XML配置来声明容器使用Java注释或代码作为元数据格式，以声明方式启用对这些其他元数据格式的支持。</p>
-<p>在大多数应用程序方案中，不需要显式用户代码来实例化Spring IoC容器的一个或多个实例。例如，在Web应用程序场景中，应用程序文件中的简单八行（左右）样板Web描述符XML web.xml通常就足够了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;context-param&gt;</span><br><span class="line">&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span><br><span class="line">&lt;param-value&gt;/WEB-INF/daoContext.xml /WEB-INF/applicationContext.xml&lt;/param-value&gt;</span><br><span class="line">&lt;/context-param&gt;</span><br><span class="line"></span><br><span class="line">&lt;listener&gt;</span><br><span class="line">    &lt;listener-<span class="class"><span class="keyword">class</span>&gt;<span class="title">org</span>.<span class="title">springframework</span>.<span class="title">web</span>.<span class="title">context</span>.<span class="title">ContextLoaderListener</span>&lt;/<span class="title">listener</span>-<span class="title">class</span>&gt;</span></span><br><span class="line"><span class="class">&lt;/<span class="title">listener</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="配置元数据"><a href="#配置元数据" class="headerlink" title="配置元数据"></a>配置元数据</h3><p>spring IOC容器通过一种元数据配置，此配置元数据表示您作为应用程序开发人员如何告诉Spring容器在应用程序中实例化，配置和组装对象。<br>spring 元数据配置有这么几种：</p>
-<ol>
-<li>XML配置，这也是最早的配置。基于XML的配置元数据将这些bean配置为<bean>顶级元素内的<beans>元素。</beans></bean></li>
-<li>注释配置。Spring 2.5引入了对基于注释的配置元数据的支持。</li>
-<li>Java配置。从Spring 3.0开始，Spring JavaConfig项目提供的许多功能成为核心Spring Framework的一部分。因此，您可以使用Java而不是XML文件在应用程序类外部定义bean。要使用这些新功能，请参阅 @Configuration， @Bean， @Import，和@DependsOn注释。</li>
-</ol>
-<p>这些bean定义对应于构成应用程序的实际对象。通常，您定义服务层对象，数据访问对象（DAO），表示对象（如Struts Action实例），基础结构对象（如Hibernate SessionFactories，JMS Queues等）。通常，不会在容器中配置细粒度域对象，因为创建和加载域对象通常由DAO和业务逻辑负责。但是，可以使用Spring与AspectJ的集成来配置在IoC容器控制之外创建的对象。</p>
-<h3 id="实例化容器"><a href="#实例化容器" class="headerlink" title="实例化容器"></a>实例化容器</h3><p>提供给ApplicationContext构造函数的位置路径是资源字符串，它允许容器从各种外部资源（如本地文件系统，Java等）加载配置元数据CLASSPATH。</p>
-<pre><code>ApplicationContext context = new ClassPathXmlApplicationContext(&quot;services.xml&quot;, &quot;daos.xml&quot;);//里面的就是我们自己的元数据配置。
-</code></pre><p>配置文件一般放在Resource文件夹下，Spring Resource，它提供了一种从URI语法中定义的位置读取InputStream的便捷机制。特别是， Resource路径用于构建应用程序上下文。这个我会再后面的文章里讲述。</p>
-<p>上面讲的是xml式的配置，还有一种groovy Bean。 bean定义也可以在Spring的Groovy Bean定义DSL中表示，如Grails框架中所知。通常，此类配置位于“.groovy”文件中，此配置样式在很大程度上等同于XML bean定义，甚至支持Spring的XML配置命名空间。它还允许通过importBeans指令导入XML bean定义文件。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">beans &#123;</span><br><span class="line">        dataSource(BasicDataSource) &#123;</span><br><span class="line">            driverClassName = <span class="string">"org.hsqldb.jdbcDriver"</span></span><br><span class="line">            url = <span class="string">"jdbc:hsqldb:mem:grailsDB"</span></span><br><span class="line">            username = <span class="string">"sa"</span></span><br><span class="line">            password = <span class="string">""</span></span><br><span class="line">            settings = [<span class="string">mynew:</span><span class="string">"setting"</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        sessionFactory(SessionFactory) &#123;</span><br><span class="line">            dataSource = dataSource</span><br><span class="line">        &#125;</span><br><span class="line">        myService(MyService) &#123;</span><br><span class="line">            nestedBean = &#123; AnotherBean bean -&gt;</span><br><span class="line">                dataSource = dataSource</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="使用IOC容器"><a href="#使用IOC容器" class="headerlink" title="使用IOC容器"></a>使用IOC容器</h3><p>ApplicationContext是高级工厂的接口，能够维护不同bean及其依赖项的注册表。通过使用该方法T getBean(String name, Class<t> requiredType)，T getBean( Class<t> requiredType)，可以检索Bean的实例。</t></t></p>
-<pre><code class="java">ClassPathXmlApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"config.xml"</span>);
-SimpleBean bean = context.getBean(SimpleBean.class);
-bean.send();
-context.close();
+<h2 id="Bean的命名与实例化"><a href="#Bean的命名与实例化" class="headerlink" title="Bean的命名与实例化"></a>Bean的命名与实例化</h2><p>在IOC容器中，这些bean定义表示为BeanDefinition对象。它有一些属性，这些属性都是在上一篇中配置元数据的配置。包括：</p>
+<ul>
+<li>包限定的类名：通常是正在定义的bean的实际实现类。</li>
+<li>Bean行为配置元素，说明bean在容器中的行为方式（范围，生命周期回调等）。</li>
+<li>引用bean执行其工作所需的其他bean。这些引用也称为协作者或依赖项。</li>
+<li>要在新创建的对象中设置的其他配置设置 - 例如，池的大小限制或在管理连接池的Bean中使用的连接数。</li>
+</ul>
+<p>除了包含有关如何创建特定bean的信息的bean定义之外，这些ApplicationContext实现还允许注册在容器外部（由用户）创建的现有对象。这是通过方法访问ApplicationContext的BeanFactory来完成的getBeanFactory()，该方法返回BeanFactory DefaultListableBeanFactory实现。DefaultListableBeanFactory通过registerSingleton(..)和registerBeanDefinition(..)方法支持此注册。但是，典型应用程序仅适用于通过常规bean定义元数据定义的bean。</p>
+<p>而关于Bean的命名，在xml配置中属性id就是他的标识符。在java 注释中也可以在@Bean（name=“”）里添加名字，它的方法名是它的id。在Bean的实例化的过程中，我在上一篇讲了xml配置的Bean的实例化，下面我将讲述java 注释的Bean的实例化。我们已经知道，java注释的配置可以有@Component @Bean。@Component 是作用在类上。@Bean与@Configuration一起作用在方法上，他们都可以实现bean的配置。下面是@Bean注册的Bean的实例化。</p>
+<p>Config.class<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> TestBean <span class="title">peoBean</span><span class="params">()</span></span>&#123;</span><br><span class="line">       TestBean bean=<span class="keyword">new</span> TestBean();</span><br><span class="line">       bean.setName(<span class="string">"peo"</span>);</span><br><span class="line">       <span class="keyword">return</span>  bean;</span><br><span class="line">   &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>TestBean.class<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestBean</span> </span>&#123;</span><br><span class="line">           String name=<span class="string">"ad"</span>;</span><br><span class="line">           <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">              <span class="keyword">return</span> name;</span><br><span class="line">           &#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.name = name;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span></span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Hello Spring"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">```    </span><br><span class="line">测试类</span><br><span class="line">``` java</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringTest</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">            ApplicationContext ctx = <span class="keyword">new</span> AnnotationConfigApplicationContext(Config.class);</span><br><span class="line">            TestBean course = ctx.getBean(TestBean.class);</span><br><span class="line">            <span class="comment">//通过id创建。</span></span><br><span class="line">             TestBean course1 = (TestBean) ctx.getBean(<span class="string">"peoBean"</span>);</span><br><span class="line">            course.getName();</span><br><span class="line">            System.out.println(course.getName());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到他的ioc容器的实现类与前面xml配置的ioc的实现类是不一样的。在代码中，我们还可以使用@Autowired来注入我们java注释注册的Bean。如本例子中就可以使用</p>
+<pre><code class="java"><span class="meta">@Autowired</span>
+<span class="keyword">private</span> TestBean bean;
 </code></pre>
-<p>该ApplicationContext 接口还有一些其他方法可以检索bean，但理想情况下，应用程序代码永远不应该使用它们。实际上，您的应用程序代码根本不应该调用该 getBean()方法，因此根本不依赖于Spring API。例如，Spring与Web框架的集成为各种Web框架组件（如控制器和JSF托管bean）提供依赖注入，允许您通过元数据（例如自动装配注释）声明对特定bean的依赖性。</p>
-<p>这篇文章主要介绍了spring IOC的相关知识，下一篇会将Bean相关的概念。To be continue !!! </p>
-<h2 id="END-！"><a href="#END-！" class="headerlink" title="END ！"></a>END ！</h2>
+<p>这里TestBean的实例就是我们@Bean注册的，而不是原来的TestBean。当你getName()时它的值是peo，同时你@Autowired的对象有多个，你可以通过@Qualifier来指明你所需要注入的类。</p>
+<p>还有一种通过静态工厂类来创建对象的，有兴趣的可以在spring官方文档学习。</p>
+
       
 
       
@@ -300,7 +277,7 @@ context.close();
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/11/20/spring-core/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/11/26/spring-bean/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -314,18 +291,9 @@ context.close();
   
 <nav id="article-nav">
   
-    <a href="/2018/11/26/SolrJ-Use-md/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          SolrJ-Use.md
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/11/19/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2018/11/26/SolrJ-Use-md/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SolrJ-Use.md</div>
       <i class="icon-circle-right"></i>
     </a>
   
