@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Howells Blog</title>
+  <title>SolrJ Use | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howells Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。 SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQ">
+<meta name="keywords" content="work,solrJ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SolrJ Use">
+<meta property="og:url" content="http://yoursite.com/2018/11/26/SolrJ-Use/index.html">
 <meta property="og:site_name" content="Howells Blog">
+<meta property="og:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。 SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQ">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-13T09:02:14.122Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Howells Blog">
+<meta name="twitter:title" content="SolrJ Use">
+<meta name="twitter:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。 SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQ">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -156,100 +161,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-spring-bean" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+            <article id="post-SolrJ-Use" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/26/spring-bean/">Spring源码学习之spring core （二）</a>
-    </h1>
-  
-
-        
-        <a href="/2018/11/26/spring-bean/" class="archive-article-date">
-  	<time datetime="2018-11-26T02:31:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。<br></p>
-        
-          <a class="article-more-a" href="/2018/11/26/spring-bean/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Ioc</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/26/spring-bean/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SolrJ-Use" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/26/SolrJ-Use/">SolrJ Use</a>
+    <h1 class="article-title" itemprop="name">
+      SolrJ Use
     </h1>
   
 
@@ -296,16 +215,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/26/SolrJ-Use/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/11/26/SolrJ-Use/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/11/26/spring-bean/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Spring源码学习之spring core （二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/20/spring-core/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Spring源码学习之spring core （一）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -325,171 +312,14 @@
 
 
 
-
   
-    <article id="post-spring-core" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/20/spring-core/">Spring源码学习之spring core （一）</a>
-    </h1>
   
 
-        
-        <a href="/2018/11/20/spring-core/" class="archive-article-date">
-  	<time datetime="2018-11-20T01:35:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>spring对于java 后端开发而言是非常重要的。阅读源码对于掌握spring也是很有帮助，所以我准备开始通过学习源码来了解spring。我主要是通过<a href="https://docs.spring.io/spring/docs/5.1.2.BUILD-SNAPSHOT/spring-framework-reference/index.html" title="spring 官方文档" target="_blank" rel="noopener">spring 官方文档</a>以及github上<a href="https://github.com/seaswalker/Spring" title="seawalker的学习文档" target="_blank" rel="noopener">seawalker的学习文档</a>来学习的spring。这篇是spring学习系列的第一篇文章。它主要是对spring core的组件的学习。<br>Core Container(核心容器)包含有Core、Beans、Context和Expression Language模块。</p>
-        
-          <a class="article-more-a" href="/2018/11/20/spring-core/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Ioc</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/20/spring-core/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/19/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2018/11/19/hello-world/" class="archive-article-date">
-  	<time datetime="2018-11-19T01:31:38.271Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2018/11/19/hello-world/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">hello</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/19/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
+
   
 
 
@@ -512,8 +342,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
