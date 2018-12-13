@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>SolrJ Use | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。 SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQ">
+  <meta name="description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
 <meta name="keywords" content="work,solrJ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SolrJ Use">
 <meta property="og:url" content="http://yoursite.com/2018/11/26/SolrJ-Use/index.html">
 <meta property="og:site_name" content="Howells Blog">
-<meta property="og:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。 SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQ">
+<meta property="og:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-13T09:02:14.122Z">
+<meta property="og:updated_time" content="2018-12-13T10:13:02.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SolrJ Use">
-<meta name="twitter:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。 SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQ">
+<meta name="twitter:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -181,8 +181,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。</p>
-<p>SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。<br>SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQuerys取回SolrResponses。<br>由于我的工作的case是单节点的solr，所以我创建SolrClient的方式是单节点的创建方式，如果想了解更多SolrJ的集群的api，还是去看官方文档[SolrJ6.6][1]。这个SolrClient底层的实现还是HttpClient包，这个包如果有认识的，应该知道它在爬虫方面的使用，它就是封装了java 自带的HTTPURLConnection包，实现http通信的工具，这里就是随意提下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpSolrClient httpSolrClient = <span class="keyword">new</span> HttpSolrClient.Builder(URL).build();</span><br></pre></td></tr></table></figure></p>
+        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。<br><a id="more"></a><br>SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。<br>SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQuerys取回SolrResponses。<br>由于我的工作的case是单节点的solr，所以我创建SolrClient的方式是单节点的创建方式，如果想了解更多SolrJ的集群的api，还是去看官方文档[SolrJ6.6][1]。这个SolrClient底层的实现还是HttpClient包，这个包如果有认识的，应该知道它在爬虫方面的使用，它就是封装了java 自带的HTTPURLConnection包，实现http通信的工具，这里就是随意提下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpSolrClient httpSolrClient = <span class="keyword">new</span> HttpSolrClient.Builder(URL).build();</span><br></pre></td></tr></table></figure></p>
 <p>这个就是获取客户端，接触过solr的同学应该知道，solr的页面查询上有很多的设置。solrJ上也有和它们方法实现查询的设置。比如，我的case是去公司生产线上抓取某个类别的一个月的数据。所以我solrJ上需要这些配置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String query=<span class="string">"documentField : value"</span>;</span><br><span class="line">SolrQuery solrQuery = <span class="keyword">new</span> SolrQuery().setQuery(query).setRows(<span class="number">300</span>).setStart(<span class="number">0</span>);</span><br><span class="line">solrQuery.set(<span class="string">"fl"</span>,<span class="string">"documentField"</span>，<span class="string">""</span>);<span class="comment">//solrQuery.setFields("documentField","");</span></span><br></pre></td></tr></table></figure></p>
 <p>上面是我的配置，第一行是设置你的查询条件，第二行是将查询条件设置进SolrQuery，同时可以看到第二行还设置了查询条数以及从那条开始显示。这个在网页版的solr上默认是10条。第三行其实效果与第一行一样，都是设置查询条件。但是fl这个字段的限制是让查询结果中只出现要求的字段，它可以是多个字段，每个字段以，隔开。如何你不喜欢第一行的写法，你也可以用第三行的写法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrQuery.set(<span class="string">"q"</span>,<span class="string">"documentField : value"</span>);</span><br></pre></td></tr></table></figure></p>
 <p>当所有的查询的条件设置完成，我们需要把solrQuery交给QueryRequest<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">QueryRequest queryRequest = <span class="keyword">new</span> QueryRequest(solrQuery);</span><br><span class="line">QueryResponse response=queryRequest.process(httpSolrClient);</span><br><span class="line">SolrDocumentList list= response.getResult();</span><br></pre></td></tr></table></figure></p>
@@ -417,6 +416,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">work</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
@@ -426,14 +433,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">work</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
             
             <div class="clearfix"></div>
