@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: Ioc | Howells Blog</title>
+  <title>Spring源码学习之依赖及依赖相关问题 （三） | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howells Blog">
-<meta property="og:url" content="http://yoursite.com/tags/Ioc/index.html">
+  <meta name="description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
+<meta name="keywords" content="Spring,Ioc,learn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring源码学习之依赖及依赖相关问题 （三）">
+<meta property="og:url" content="http://yoursite.com/2019/01/07/spring-bean-two/index.html">
 <meta property="og:site_name" content="Howells Blog">
+<meta property="og:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-07T07:02:10.921Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Howells Blog">
+<meta name="twitter:title" content="Spring源码学习之依赖及依赖相关问题 （三）">
+<meta name="twitter:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -156,36 +161,61 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-spring-bean-two" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      Spring源码学习之依赖及依赖相关问题 （三）
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/07/spring-bean-two/" class="archive-article-date">
+
+        
+        <a href="/2019/01/07/spring-bean-two/" class="archive-article-date">
   	<time datetime="2019-01-07T07:00:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-07</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/07/spring-bean-two/">Spring源码学习之依赖及依赖相关问题 （三）</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。<br><a id="more"></a></p>
+<h2 id="构造函数注入"><a href="#构造函数注入" class="headerlink" title="构造函数注入"></a>构造函数注入</h2><p>基于构造函数的注入，我想大家都不会陌生。就是在一个你需要被注入的对象里创建一个构造函数，里面的参数是是需要注入的对象的一个实例。对于一般来说是这样的，但是如果我们特殊一点，参数是几个有‘歧义’的时候，应该怎么去注入呢？比如说两个int，string。Spring无法确定值的类型，因此无法在没有帮助的情况下按类型进行匹配。所以需要在配置文件里面显示式调用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> examples;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExampleBean</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Number of years to calculate the Ultimate Answer</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> years;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The Answer to Life, the Universe, and Everything</span></span><br><span class="line">    <span class="keyword">private</span> String ultimateAnswer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ExampleBean</span><span class="params">(<span class="keyword">int</span> years, String ultimateAnswer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.years = years;</span><br><span class="line">        <span class="keyword">this</span>.ultimateAnswer = ultimateAnswer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在前面的场景中，如果使用type属性显式指定构造函数参数的类型，则容器可以使用与简单类型匹配的类型。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"exampleBean"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"examples.ExampleBean"</span>&gt;</span><br><span class="line">    &lt;constructor-arg index=<span class="string">"0"</span> value=<span class="string">"7500000"</span>/&gt;</span><br><span class="line">    &lt;constructor-arg index=<span class="string">"1"</span> value=<span class="string">"42"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
+<p>或者可以使用该index属性显式指定构造函数参数的索引，除了解决多个简单值的歧义之外，指定索引还可以解决构造函数具有相同类型的两个参数的歧义。index 从0开始。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"exampleBean"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"examples.ExampleBean"</span>&gt;</span><br><span class="line">    &lt;constructor-arg index=<span class="string">"0"</span> value=<span class="string">"7500000"</span>/&gt;</span><br><span class="line">    &lt;constructor-arg index=<span class="string">"1"</span> value=<span class="string">"42"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
+<p>还可以用构造函数的参数名称来消除歧义,但是如果你想使用这种方式，你还要在构造函数的前面加上 @ConstructorProperties({“years”, “ultimateAnswer”})。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"exampleBean"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"examples.ExampleBean"</span>&gt;</span><br><span class="line">    &lt;constructor-arg name=<span class="string">"years"</span> value=<span class="string">"7500000"</span>/&gt;</span><br><span class="line">    &lt;constructor-arg name=<span class="string">"ultimateAnswer"</span> value=<span class="string">"42"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
+<p>以上是构造函数注入解决歧义的一些措施。</p>
+<h2 id="setter注入"><a href="#setter注入" class="headerlink" title="setter注入"></a>setter注入</h2><p>setter注入是容器通过无参构造函数创建bean。常见的使用方式我们应该都了解。我在这里想说的是使用setter方式配置格式是使用一种BeanDefinition来创建实例。按照官方文档的说法是BeanDefinition是一种通过PropertyEditor 将属性从一种格式转换成另一种格式。我对这句话不是很能理解，在我们实践的过程中不会直接去使用这些类（就是编程）。我们是通过xml配置或者是我们常见的@Component，@controller,等注解，或者是@Bean和@Configuration。接着他们就会在内部转换成BeanDefinition的实例。然后被加载到ioc容器中。</p>
+<p>spring官方推荐使用构造函数注入，它适用于必须的依赖项。因为他可以确保你需要的依赖不为空，并且当你构造函数过大时，也可以提醒你改重构了。而如果使用setter注入的话，应该是在那种可选依赖的情况下使用，可以在类中指定合理的默认值。否则,必须要在各地使用该依赖的代码执行非null的检查。当然，setter方式还可以用在循环依赖的情况下。</p>
+<h2 id="Autowried-Resource的区别"><a href="#Autowried-Resource的区别" class="headerlink" title="@Autowried @Resource的区别"></a>@Autowried @Resource的区别</h2><p>在前面提到过，@Autowried @Resource都是基于setter方式的装配Bean，他们都可以放在字段上或者是set方法上。</p>
+<ol>
+<li>@Autowried是spring里的注解，而@Resource是jdk 1.6的注解。</li>
+<li>@Autowried默认支持的是按类型装配。它要求依赖的对象必须是存在的，要是想允许是null的话，需要将他的required属性设置为false。如果想让他支持按名称装配的话，也可以加上@Qualifier（“名称”）。而@Resource默认的是按属性装配的，名称可以通过name属性，如果没有name属性，当注解写在字段上时，默认取字段名，按照名称查找，如果注解写在setter方法上默认取属性名进行装配。当找不到与名称匹配的bean时才按照类型进行装配。但是需要注意的是，如果name属性一旦指定，就只会按照名称进行装配。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Resource</span>(name=<span class="string">"baseDao"</span>)    </span><br><span class="line"><span class="keyword">private</span> BaseDao baseDao;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="依赖性解决过程"><a href="#依赖性解决过程" class="headerlink" title="依赖性解决过程"></a>依赖性解决过程</h2><p>容器执行bean依赖的步骤是：</p>
+<ol>
+<li>applicationContext将所有的bean进行创建和初始化。</li>
+<li>对于bean来说，它会把bean的依赖关系以属性，构造函数等方式展现出来。在bean真正被创建时，将这些依赖项提供给bean。</li>
+<li>每个属性或构造函数参数都是要设置的值的实际定义，或者是对容器中另一个bean的引用。</li>
+<li>每个属性或构造函数参数值从其指定的格式转换为实际的属性或构造函数参数的类型。默认情况下，Spring能够转换成字符串格式提供给所有内置类型的值，例如int， long，String，boolean，等等。</li>
+</ol>
+<p>Spring容器在创建容器时验证每个bean的配置。但是，在实际创建bean之前，不会设置bean属性本身。那些singleton-scoped的bean会在容器创建的时候创建，它的范围是Bean scope。其他类型的bean会在它被需要的时候才创建。</p>
+<p>当出现依赖循环时，如果是在使用构造函数注入会发生。那么会直接抛出BeanCurrentlyInCreationException异常表示循环依赖。Spring容器将每一个正在创建的Bean标识符放在一个singletonsCurrentlyInCreation中，Bean标识符在创建过程中将一直保持在这个池中，因此如果在创建Bean过程中发现自己已经在singletonsCurrentlyInCreation里时将抛出BeanCurrentlyInCreationException异常表示循环依赖；而对于创建完毕的Bean将从“当前创建Bean池”中清除掉。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">beforeSingletonCreation</span><span class="params">(String beanName)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (!<span class="keyword">this</span>.inCreationCheckExclusions.contains(beanName) &amp;&amp; !<span class="keyword">this</span>.singletonsCurrentlyInCreation.add(beanName)) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> BeanCurrentlyInCreationException(beanName);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>而如果是setter注入的话，还是有解决方法的，对于setter注入造成的依赖是通过Spring容器提前暴露刚完成构造器注入但未完成其他步骤（如setter注入）的Bean来完成的。这样就可以在循环时调用这个未完成的bean来注入，使得这个bean能够成功创建，同时在将这个创建成功的bean注入到依赖它的类中，从而解决循环依赖。再具体的分析中，在关于singleBean的创建类中。可以看到这样的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> ConcurrentHashMap(<span class="number">256</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> HashMap(<span class="number">16</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> HashMap(<span class="number">16</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;String&gt; singletonsCurrentlyInCreation = Collections.newSetFromMap(<span class="keyword">new</span> ConcurrentHashMap(<span class="number">16</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>在Spring容器整个生命周期内，有且只有一个对象，所以很容易想到这个对象应该存在Cache中，Spring为了解决单例的循环依赖问题，使用了三级缓存。<br>这三级缓存分别指：<br>singletonFactories ： 单例对象工厂的cache 。<br>earlySingletonObjects ：提前暴光的单例对象的Cache 。<br>singletonObjects：单例对象的cache。<br>我们在创建bean的时候首先会从singletonObjects里面查看。主要调用方法就就是<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, <span class="keyword">boolean</span> allowEarlyReference)</span> </span>&#123;</span><br><span class="line">    Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">    <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">            singletonObject = <span class="keyword">this</span>.earlySingletonObjects.get(beanName);</span><br><span class="line">            <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">                ObjectFactory&lt;?&gt; singletonFactory = <span class="keyword">this</span>.singletonFactories.get(beanName);</span><br><span class="line">                <span class="keyword">if</span> (singletonFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    singletonObject = singletonFactory.getObject();</span><br><span class="line">                    <span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</span><br><span class="line">                    <span class="keyword">this</span>.singletonFactories.remove(beanName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (singletonObject != NULL_OBJECT ? singletonObject : <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里面：<br>isSingletonCurrentlyInCreation()判断当前单例bean是否正在创建中，也就是没有初始化完成(比如A的构造器依赖了B对象所以得先去创建B对象，或则在A的populateBean过程中依赖了B对象，得先去创建B对象，这时的A就是处于创建中的状态。)<br>allowEarlyReference 是否允许从singletonFactories中通过getObject拿到对象。<br>所以看代码可以看出来，在拿bean时，它会先去看这个一级缓存singletonObjects里有没有，有的话直接拿，没有的话，就看这个bean是否是在创建的状态，创建中的bean在名为singletonsCurrentlyInCreation的map中,就再从二级缓存earlySingletonObjects中获取。如果还是获取不到且允许singletonFactories通过getObject()获取，就从三级缓存singletonFactory.getObject()(三级缓存)获取，如果获取到了就要把对象从三级缓存移到二级缓存。<br>那么就要看这个三级缓存是在这里添加的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">    Assert.notNull(singletonFactory, <span class="string">"Singleton factory must not be null"</span>);</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">            <span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</span><br><span class="line">            <span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">            <span class="keyword">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里就是解决循环依赖的关键，这段代码发生在createBeanInstance之后，也就是说单例对象此时已经被创建出来(调用了构造器)。这个对象已经被生产出来了，虽然还不完美（还没有进行初始化的第二步和第三步），但是已经能被人认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来让大家认识，让大家使用。然后下次再调用的时候他就会按照我们上文说的三级缓存，拿到后，就把它放到过早暴露的缓存中。</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -205,121 +235,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/01/07/spring-bean-two/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/16/SpringBoot-Jms/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">消息中间件在Springboot中的实践</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/11/26/spring-bean/" class="archive-article-date">
-  	<time datetime="2018-11-26T02:31:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-26</time>
-</a>
-        </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/11/26/spring-bean/">Spring源码学习之spring core （二）</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Ioc</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/11/20/spring-core/" class="archive-article-date">
-  	<time datetime="2018-11-20T01:35:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/11/20/spring-core/">Spring源码学习之spring core （一）</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Ioc</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -342,9 +357,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
