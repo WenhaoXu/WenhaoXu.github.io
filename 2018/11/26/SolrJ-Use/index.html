@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>SolrJ Use | Howells Blog</title>
+  <title>Solr Use | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
 <meta name="keywords" content="work,solrJ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SolrJ Use">
+<meta property="og:title" content="Solr Use">
 <meta property="og:url" content="http://yoursite.com/2018/11/26/SolrJ-Use/index.html">
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-13T10:13:02.718Z">
+<meta property="og:updated_time" content="2019-01-15T05:52:41.910Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SolrJ Use">
+<meta name="twitter:title" content="Solr Use">
 <meta name="twitter:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
@@ -168,7 +168,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      SolrJ Use
+      Solr Use
     </h1>
   
 
@@ -181,13 +181,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。<br><a id="more"></a><br>SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。<br>SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQuerys取回SolrResponses。<br>由于我的工作的case是单节点的solr，所以我创建SolrClient的方式是单节点的创建方式，如果想了解更多SolrJ的集群的api，还是去看官方文档[SolrJ6.6][1]。这个SolrClient底层的实现还是HttpClient包，这个包如果有认识的，应该知道它在爬虫方面的使用，它就是封装了java 自带的HTTPURLConnection包，实现http通信的工具，这里就是随意提下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpSolrClient httpSolrClient = <span class="keyword">new</span> HttpSolrClient.Builder(URL).build();</span><br></pre></td></tr></table></figure></p>
+        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。<br><a id="more"></a></p>
+<h2 id="SolrJ-使用"><a href="#SolrJ-使用" class="headerlink" title="SolrJ 使用"></a>SolrJ 使用</h2><p>SolrJ 是一个API，它提供接口去让应用程序能够便捷的与Solr交互。<br>SolrJ的中心是org.apache.solr.client.solrj包，它只包含五个主要类。首先创建一个SolrClient，表示您要使用的Solr实例。然后发送SolrRequests或SolrQuerys取回SolrResponses。<br>由于我的工作的case是单节点的solr，所以我创建SolrClient的方式是单节点的创建方式，如果想了解更多SolrJ的集群的api，还是去看官方文档[SolrJ6.6][1]。这个SolrClient底层的实现还是HttpClient包，这个包如果有认识的，应该知道它在爬虫方面的使用，它就是封装了java 自带的HTTPURLConnection包，实现http通信的工具，这里就是随意提下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpSolrClient httpSolrClient = <span class="keyword">new</span> HttpSolrClient.Builder(URL).build();</span><br></pre></td></tr></table></figure></p>
 <p>这个就是获取客户端，接触过solr的同学应该知道，solr的页面查询上有很多的设置。solrJ上也有和它们方法实现查询的设置。比如，我的case是去公司生产线上抓取某个类别的一个月的数据。所以我solrJ上需要这些配置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String query=<span class="string">"documentField : value"</span>;</span><br><span class="line">SolrQuery solrQuery = <span class="keyword">new</span> SolrQuery().setQuery(query).setRows(<span class="number">300</span>).setStart(<span class="number">0</span>);</span><br><span class="line">solrQuery.set(<span class="string">"fl"</span>,<span class="string">"documentField"</span>，<span class="string">""</span>);<span class="comment">//solrQuery.setFields("documentField","");</span></span><br></pre></td></tr></table></figure></p>
 <p>上面是我的配置，第一行是设置你的查询条件，第二行是将查询条件设置进SolrQuery，同时可以看到第二行还设置了查询条数以及从那条开始显示。这个在网页版的solr上默认是10条。第三行其实效果与第一行一样，都是设置查询条件。但是fl这个字段的限制是让查询结果中只出现要求的字段，它可以是多个字段，每个字段以，隔开。如何你不喜欢第一行的写法，你也可以用第三行的写法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrQuery.set(<span class="string">"q"</span>,<span class="string">"documentField : value"</span>);</span><br></pre></td></tr></table></figure></p>
 <p>当所有的查询的条件设置完成，我们需要把solrQuery交给QueryRequest<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">QueryRequest queryRequest = <span class="keyword">new</span> QueryRequest(solrQuery);</span><br><span class="line">QueryResponse response=queryRequest.process(httpSolrClient);</span><br><span class="line">SolrDocumentList list= response.getResult();</span><br></pre></td></tr></table></figure></p>
 <p>这个就是查询的整个逻辑，response类中getResult()才是获得我们查询的SolrDocumentList。SolrDocumentList中还提供了该查询条件下的总共查询出来的document数量。list.getNumFound();当查询的数量过大时可以通过分页获取的方式减少压力。<br>但是，对于我的case来说，这样还不能解决问题，因为生产线上的数据是十分重要的。想要查询生产线上的数据肯定是需要用户名密码的。所以如何能够验证是我接下来需要解决的问题。如果生产线采用的solr自带的basic authentication。那么solrJ的高版本可以提供接口去验证用户的权限。这样问题就可以解决了。只需要在 QueryRequest中进行设置就好了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queryRequest.setBasicAuthCredentials(<span class="string">"username"</span>,<span class="string">"password"</span>);</span><br></pre></td></tr></table></figure></p>
 <hr>
-<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2><p> 以上是我在工作中遇到使用solrJ的所遇到的问题。<br>  [1]: <a href="https://lucene.apache.org/solr/guide/6_6/using-solrj.html" target="_blank" rel="noopener">https://lucene.apache.org/solr/guide/6_6/using-solrj.html</a></p>
+<h2 id="solr-导入数据库数据"><a href="#solr-导入数据库数据" class="headerlink" title="solr 导入数据库数据"></a>solr 导入数据库数据</h2><p>在solr的使用中，还有就是导入数据库数据的操作，它分为全导入（full import），和批量导入（delta import）。这些其他的博客中都有，我在这就只描述下我遇到的问题。</p>
+<p>第一个是我数据库的表是联合主键的，这个时候我们的需要自定义一个主键，它有我们的联合主键拼接而成：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select key1 || key2 || key3 as id,</span><br></pre></td></tr></table></figure></p>
+<p>第二个是在批量导入时，无法导入数据。我们发现是我们delta query 写的有问题。它只能返回一个主键，不能是其他的东西，<br>同时，在deltaImportQuery 中 where 也应该是主键=主键。我们一开始是让他们各个联合主键相同，</p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2><p> 以上是我在工作中遇到使用solr的所遇到的问题。<br>  [1]: <a href="https://lucene.apache.org/solr/guide/6_6/using-solrj.html" target="_blank" rel="noopener">https://lucene.apache.org/solr/guide/6_6/using-solrj.html</a></p>
 
       
 
@@ -412,18 +416,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">work</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">hello</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">springboot</a>
               </li>
              
@@ -433,6 +425,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Solace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">work</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">hello</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
              
               <li class="article-tag-list-item">
