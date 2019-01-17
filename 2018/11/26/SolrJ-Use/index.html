@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-15T05:52:41.910Z">
+<meta property="og:updated_time" content="2019-01-15T06:38:31.579Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Solr Use">
 <meta name="twitter:description" content="简述我们公司使用solr的频率很高，不论是存储数据还是log，都喜欢使用solr。所以就开了一篇来记录下solr的使用。">
@@ -187,9 +187,9 @@
 <p>上面是我的配置，第一行是设置你的查询条件，第二行是将查询条件设置进SolrQuery，同时可以看到第二行还设置了查询条数以及从那条开始显示。这个在网页版的solr上默认是10条。第三行其实效果与第一行一样，都是设置查询条件。但是fl这个字段的限制是让查询结果中只出现要求的字段，它可以是多个字段，每个字段以，隔开。如何你不喜欢第一行的写法，你也可以用第三行的写法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solrQuery.set(<span class="string">"q"</span>,<span class="string">"documentField : value"</span>);</span><br></pre></td></tr></table></figure></p>
 <p>当所有的查询的条件设置完成，我们需要把solrQuery交给QueryRequest<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">QueryRequest queryRequest = <span class="keyword">new</span> QueryRequest(solrQuery);</span><br><span class="line">QueryResponse response=queryRequest.process(httpSolrClient);</span><br><span class="line">SolrDocumentList list= response.getResult();</span><br></pre></td></tr></table></figure></p>
 <p>这个就是查询的整个逻辑，response类中getResult()才是获得我们查询的SolrDocumentList。SolrDocumentList中还提供了该查询条件下的总共查询出来的document数量。list.getNumFound();当查询的数量过大时可以通过分页获取的方式减少压力。<br>但是，对于我的case来说，这样还不能解决问题，因为生产线上的数据是十分重要的。想要查询生产线上的数据肯定是需要用户名密码的。所以如何能够验证是我接下来需要解决的问题。如果生产线采用的solr自带的basic authentication。那么solrJ的高版本可以提供接口去验证用户的权限。这样问题就可以解决了。只需要在 QueryRequest中进行设置就好了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queryRequest.setBasicAuthCredentials(<span class="string">"username"</span>,<span class="string">"password"</span>);</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h2 id="solr-导入数据库数据"><a href="#solr-导入数据库数据" class="headerlink" title="solr 导入数据库数据"></a>solr 导入数据库数据</h2><p>在solr的使用中，还有就是导入数据库数据的操作，它分为全导入（full import），和批量导入（delta import）。这些其他的博客中都有，我在这就只描述下我遇到的问题。</p>
-<p>第一个是我数据库的表是联合主键的，这个时候我们的需要自定义一个主键，它有我们的联合主键拼接而成：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select key1 || key2 || key3 as id,</span><br></pre></td></tr></table></figure></p>
+<h2 id="solr-导入数据库数据"><a href="#solr-导入数据库数据" class="headerlink" title="solr 导入数据库数据"></a>solr 导入数据库数据</h2><p>在solr的使用中，还有就是导入数据库数据的操作，它分为全导入（full import），和批量导入（delta import）。<br>他们的主要配置过程是 找到 solrconfig.xml ,schema.xml 。 在solrconfig中添加:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;requestHandler name=<span class="string">"/dataimport"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"org.apache.solr.handler.dataimport.DataImportHandler"</span>&gt;  </span><br><span class="line">      &lt;lst name=<span class="string">"defaults"</span>&gt; </span><br><span class="line">             &lt;str name="config"&gt;data-config.xml&lt;/str&gt;   </span><br><span class="line">       &lt;/lst&gt;   </span><br><span class="line">    &lt;/requestHandler&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后在schema文件里配置你想导入的表的字段。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;field name=<span class="string">"entity"</span> type=<span class="string">"string"</span> indexed=<span class="string">"true"</span> stored=<span class="string">"true"</span>/&gt;</span><br><span class="line"> &lt;dynamicField name=<span class="string">"*_id"</span>  type=<span class="string">"string"</span>    indexed=<span class="string">"true"</span>  stored=<span class="string">"true"</span>/&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这两种都可以。<br>最后就是自己创建一个 data-config.xml 来导入数据库数据。<br>第一个是我数据库的表是联合主键的，这个时候我们的需要自定义一个主键，它有我们的联合主键拼接而成：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select key1 || key2 || key3 as id,</span><br></pre></td></tr></table></figure></p>
 <p>第二个是在批量导入时，无法导入数据。我们发现是我们delta query 写的有问题。它只能返回一个主键，不能是其他的东西，<br>同时，在deltaImportQuery 中 where 也应该是主键=主键。我们一开始是让他们各个联合主键相同，</p>
 <h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2><p> 以上是我在工作中遇到使用solr的所遇到的问题。<br>  [1]: <a href="https://lucene.apache.org/solr/guide/6_6/using-solrj.html" target="_blank" rel="noopener">https://lucene.apache.org/solr/guide/6_6/using-solrj.html</a></p>
 
@@ -436,10 +436,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
@@ -449,6 +445,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">framework</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
             
             <div class="clearfix"></div>

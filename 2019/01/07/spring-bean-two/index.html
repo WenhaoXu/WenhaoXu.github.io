@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-07T07:02:10.921Z">
+<meta property="og:updated_time" content="2019-01-17T03:45:35.476Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码学习之依赖及依赖相关问题 （三）">
 <meta name="twitter:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
@@ -187,6 +187,7 @@
 <p>或者可以使用该index属性显式指定构造函数参数的索引，除了解决多个简单值的歧义之外，指定索引还可以解决构造函数具有相同类型的两个参数的歧义。index 从0开始。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"exampleBean"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"examples.ExampleBean"</span>&gt;</span><br><span class="line">    &lt;constructor-arg index=<span class="string">"0"</span> value=<span class="string">"7500000"</span>/&gt;</span><br><span class="line">    &lt;constructor-arg index=<span class="string">"1"</span> value=<span class="string">"42"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
 <p>还可以用构造函数的参数名称来消除歧义,但是如果你想使用这种方式，你还要在构造函数的前面加上 @ConstructorProperties({“years”, “ultimateAnswer”})。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"exampleBean"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"examples.ExampleBean"</span>&gt;</span><br><span class="line">    &lt;constructor-arg name=<span class="string">"years"</span> value=<span class="string">"7500000"</span>/&gt;</span><br><span class="line">    &lt;constructor-arg name=<span class="string">"ultimateAnswer"</span> value=<span class="string">"42"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
 <p>以上是构造函数注入解决歧义的一些措施。</p>
+<p>在ApplicationContext初始化bean时，单例的bean一般在初始化过程中就会创建，如果想让一个bean在第一次请求时再创建时，可以在<bean>中添加lazy-init=”true”属性。但是如果这个bean被另一个单例bean所依赖，那么他还是会被创建。</bean></p>
 <h2 id="setter注入"><a href="#setter注入" class="headerlink" title="setter注入"></a>setter注入</h2><p>setter注入是容器通过无参构造函数创建bean。常见的使用方式我们应该都了解。我在这里想说的是使用setter方式配置格式是使用一种BeanDefinition来创建实例。按照官方文档的说法是BeanDefinition是一种通过PropertyEditor 将属性从一种格式转换成另一种格式。我对这句话不是很能理解，在我们实践的过程中不会直接去使用这些类（就是编程）。我们是通过xml配置或者是我们常见的@Component，@controller,等注解，或者是@Bean和@Configuration。接着他们就会在内部转换成BeanDefinition的实例。然后被加载到ioc容器中。</p>
 <p>spring官方推荐使用构造函数注入，它适用于必须的依赖项。因为他可以确保你需要的依赖不为空，并且当你构造函数过大时，也可以提醒你改重构了。而如果使用setter注入的话，应该是在那种可选依赖的情况下使用，可以在类中指定合理的默认值。否则,必须要在各地使用该依赖的代码执行非null的检查。当然，setter方式还可以用在循环依赖的情况下。</p>
 <h2 id="Autowried-Resource的区别"><a href="#Autowried-Resource的区别" class="headerlink" title="@Autowried @Resource的区别"></a>@Autowried @Resource的区别</h2><p>在前面提到过，@Autowried @Resource都是基于setter方式的装配Bean，他们都可以放在字段上或者是set方法上。</p>
@@ -298,6 +299,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2019/01/10/middle-stage/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          阿里中台战略读后感
+        
+      </div>
+    </a>
   
   
     <a href="/2018/12/16/SpringBoot-Jms/" id="article-nav-older" class="article-nav-link-wrap">
@@ -447,10 +457,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
@@ -460,6 +466,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">framework</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
             
             <div class="clearfix"></div>
