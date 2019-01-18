@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-17T03:45:35.476Z">
+<meta property="og:updated_time" content="2019-01-18T05:41:57.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码学习之依赖及依赖相关问题 （三）">
 <meta name="twitter:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
@@ -60,7 +60,7 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/tags/note/">随笔</a></li>
+				<li><a href="/tags/随笔/">随笔</a></li>
 	        
 				<li><a href="/tags/learn/">学习</a></li>
 	        
@@ -144,7 +144,7 @@
 				
 					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
 		        
-					<li style="width: 33.333333333333336%"><a href="/tags/note/">随笔</a></li>
+					<li style="width: 33.333333333333336%"><a href="/tags/随笔/">随笔</a></li>
 		        
 					<li style="width: 33.333333333333336%"><a href="/tags/learn/">学习</a></li>
 		        
@@ -190,6 +190,10 @@
 <p>在ApplicationContext初始化bean时，单例的bean一般在初始化过程中就会创建，如果想让一个bean在第一次请求时再创建时，可以在<bean>中添加lazy-init=”true”属性。但是如果这个bean被另一个单例bean所依赖，那么他还是会被创建。</bean></p>
 <h2 id="setter注入"><a href="#setter注入" class="headerlink" title="setter注入"></a>setter注入</h2><p>setter注入是容器通过无参构造函数创建bean。常见的使用方式我们应该都了解。我在这里想说的是使用setter方式配置格式是使用一种BeanDefinition来创建实例。按照官方文档的说法是BeanDefinition是一种通过PropertyEditor 将属性从一种格式转换成另一种格式。我对这句话不是很能理解，在我们实践的过程中不会直接去使用这些类（就是编程）。我们是通过xml配置或者是我们常见的@Component，@controller,等注解，或者是@Bean和@Configuration。接着他们就会在内部转换成BeanDefinition的实例。然后被加载到ioc容器中。</p>
 <p>spring官方推荐使用构造函数注入，它适用于必须的依赖项。因为他可以确保你需要的依赖不为空，并且当你构造函数过大时，也可以提醒你改重构了。而如果使用setter注入的话，应该是在那种可选依赖的情况下使用，可以在类中指定合理的默认值。否则,必须要在各地使用该依赖的代码执行非null的检查。当然，setter方式还可以用在循环依赖的情况下。</p>
+<h2 id="方法注入"><a href="#方法注入" class="headerlink" title="方法注入"></a>方法注入</h2><p>在大多数的场景下，我们一般都是单例的bean。并且bean之间的依赖关系一般也是相同生命周期的，如单例bean依赖单例，非单例依赖非单例，这些都没有问题，但是当单例依赖于非单例时，就会出现问题了。因为单例中依赖的非单例只初始化过一次，但是我可能需要改变之后的非单例bean 实例，所以就会出现问题。<br>解决方法是： 创建一个class 去实现 ApplicationContextAware 接口，然后通过 getBean(“B”) 来每次需要B新的的实例的时候来获得，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.BeansException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContextAware;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommandManager</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">process</span><span class="params">(Map commandState)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// grab a new instance of the appropriate Command</span></span><br><span class="line">        Command command = createCommand();</span><br><span class="line">        <span class="comment">// set the state on the (hopefully brand new) Command instance</span></span><br><span class="line">        command.setState(commandState);</span><br><span class="line">        <span class="keyword">return</span> command.execute();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Command <span class="title">createCommand</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// notice the Spring API dependency!</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.applicationContext.getBean(<span class="string">"command"</span>, Command.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是spring 官方是不推荐这种方式的，因为业务代码知道并耦合到Spring Framework里了。官方推荐的是Lookup 方法注入。@Lookup对于：将原型范围的bean注入单例bean（类似于Provider），以程序方式注入依赖项。所以Lookup通常涉及原型bean。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="comment">//@Scope("prototype")</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span>  <span class="class"><span class="keyword">class</span> <span class="title">StudentServices</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... member variables, etc.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Lookup</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">abstract</span>  SchoolNotification <span class="title">getNotification</span><span class="params">()</span> </span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope</span>(<span class="string">"prototype"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SchoolNotification</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ... prototype-scoped state</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Autowried-Resource的区别"><a href="#Autowried-Resource的区别" class="headerlink" title="@Autowried @Resource的区别"></a>@Autowried @Resource的区别</h2><p>在前面提到过，@Autowried @Resource都是基于setter方式的装配Bean，他们都可以放在字段上或者是set方法上。</p>
 <ol>
 <li>@Autowried是spring里的注解，而@Resource是jdk 1.6的注解。</li>
@@ -469,15 +473,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">framework</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
               </li>
              
               <li class="article-tag-list-item">
