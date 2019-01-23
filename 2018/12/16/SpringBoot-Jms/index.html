@@ -9,14 +9,14 @@
   <title>消息中间件在Springboot中的实践 | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="简述 在如今分布式系统设计大行其道的时候，各个组件之间的通信是分布式系统的命脉。一般来说，消息中间件是比较好的通信手段。而springboot，它的快速开发也是微服务中看重的一点，所以这篇文章主要就是讲springboot中消息中间件的使用。">
-<meta name="keywords" content="springboot,Jms,Solace,work">
+<meta name="keywords" content="work,springboot,Jms,Solace">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息中间件在Springboot中的实践">
 <meta property="og:url" content="http://yoursite.com/2018/12/16/SpringBoot-Jms/index.html">
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述 在如今分布式系统设计大行其道的时候，各个组件之间的通信是分布式系统的命脉。一般来说，消息中间件是比较好的通信手段。而springboot，它的快速开发也是微服务中看重的一点，所以这篇文章主要就是讲springboot中消息中间件的使用。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-18T00:50:51.945Z">
+<meta property="og:updated_time" content="2019-01-23T02:31:33.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息中间件在Springboot中的实践">
 <meta name="twitter:description" content="简述 在如今分布式系统设计大行其道的时候，各个组件之间的通信是分布式系统的命脉。一般来说，消息中间件是比较好的通信手段。而springboot，它的快速开发也是微服务中看重的一点，所以这篇文章主要就是讲springboot中消息中间件的使用。">
@@ -182,7 +182,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p> 在如今分布式系统设计大行其道的时候，各个组件之间的通信是分布式系统的命脉。一般来说，消息中间件是比较好的通信手段。而springboot，它的快速开发也是微服务中看重的一点，所以这篇文章主要就是讲springboot中消息中间件的使用。<br> <a id="more"></a></p>
-<h3 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h3><p>   我们常见的消息中间件有RocketMQ，RabbitMQ，ActiveMQ等，他们都有自己的特点，这里就不多介绍了，我就介绍一种不常见的消息中间件，同时也是我正在实践的一个：Solace。它不同于其他的消息中间件，它是唯一一个基于硬件的中间件。正是因为他这个特点，他的传输效率，容量都要比常见的软件版的更加强大。在金融公司，solace的使用可能会更多一些。</p>
+<h3 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h3><p>   我们常见的消息中间件有RocketMQ，RabbitMQ，ActiveMQ等，他们都有自己的特点，这里就不多介绍了，我就介绍一种不常见的消息中间件，同时也是我正在实践的一个：Solace。它不同于其他的消息中间件，它是唯一一个基于硬件的中间件。正是因为他这个特点，他的传输效率，容量都要比常见的软件版的更加强大。并且，它在到达接收峰值后的承受能力比一般的中间件表现的更好，一般的消息中间件在消息条数过多时，它的运行速度会变慢，但是solace不会，它的表现还是很稳定的。在金融公司，solace的使用可能会更多一些。</p>
 <p>我刚开始接触这个消息中间件的时候，也是一脸懵逼，因为根本就没有可以参考的中文文章。它的官方文档中，也只有solace在java上的简单实践。根本无法满足solace的开发要求。后来在github上终于找到了一个springboot简单集成solace的demo。并且我在这个例子的基础上添加了消息中间件的一些实践。</p>
 <h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>springboot集成solace，真正起作用的是solace-jms-spring-boot-starter这个jar包，springboot集成了当前市面上大部分的消息中间件的starter。了解springboot的应该知道。starter是springboot独特的设计，它可以帮我们实现一些我们需要的组件的默认配置与集成。不需要我们过多的操心。这个solace的starter也是一样。它让我们可以使用springboot的JmsTemplete来快速开发。其他的消息中间件也有他们自己的starter。在使用上还是使用JmsTemplete。所以如果是使用其他的消息中间件，也可以看看这篇实践。</p>
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>最开始，当然是在springboot中配置消息中间件的基础信息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solace.jms.host=<span class="number">192.168</span>.254.128</span><br><span class="line">solace.jms.msgVpn=<span class="keyword">default</span></span><br><span class="line">solace.jms.clientUsername=admin</span><br><span class="line">solace.jms.clientPassword=admin</span><br></pre></td></tr></table></figure></p>
@@ -210,6 +210,10 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">work</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">springboot</a>
         		</li>
       		 
@@ -219,10 +223,6 @@
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Solace</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">work</a>
         		</li>
       		
 		</ul>
@@ -429,6 +429,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">work</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">springboot</a>
               </li>
              
@@ -441,11 +449,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">work</a>
+                <a href="javascript:void(0)" class="js-tag color1">hello</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">hello</a>
+                <a href="javascript:void(0)" class="js-tag color5">framework</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -462,18 +474,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">framework</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
             
             <div class="clearfix"></div>
