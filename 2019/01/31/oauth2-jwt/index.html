@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>OAuth2和JWT,以及spring security在springboot中的实践 | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。 JWT（json web token）是一种安全标准。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产">
+  <meta name="description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。">
 <meta name="keywords" content="Oauth2,jwt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OAuth2和JWT,以及spring security在springboot中的实践">
 <meta property="og:url" content="http://yoursite.com/2019/01/31/oauth2-jwt/index.html">
 <meta property="og:site_name" content="Howells Blog">
-<meta property="og:description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。 JWT（json web token）是一种安全标准。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产">
+<meta property="og:description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/01/31/oauth2-jwt/oauth2.png">
 <meta property="og:image" content="http://yoursite.com/2019/01/31/oauth2-jwt/password_model.png">
-<meta property="og:updated_time" content="2019-02-13T06:30:54.247Z">
+<meta property="og:updated_time" content="2019-02-13T06:34:00.214Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OAuth2和JWT,以及spring security在springboot中的实践">
-<meta name="twitter:description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。 JWT（json web token）是一种安全标准。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产">
+<meta name="twitter:description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。">
 <meta name="twitter:image" content="http://yoursite.com/2019/01/31/oauth2-jwt/oauth2.png">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
@@ -184,8 +184,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="OAtuh2和JWT"><a href="#OAtuh2和JWT" class="headerlink" title="OAtuh2和JWT"></a>OAtuh2和JWT</h2><p>在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。</p>
-<p>JWT（json web token）是一种安全标准。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产生并返回一个Token（令牌），用户可以使用这个token访问服务器上受保护的资源。<br>OAuth2是一种授权框架 ，提供了一套详细的授权机制（指导）。用户或应用可以通过公开的或私有的设置，授权第三方应用访问特定资源。在讨论OAuth2的实现时，会把JSON Web Token作为一种认证机制使用。</p>
+        <h2 id="OAtuh2和JWT"><a href="#OAtuh2和JWT" class="headerlink" title="OAtuh2和JWT"></a>OAtuh2和JWT</h2><p>在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。<br><a id="more"></a><br>JWT（json web token）是一种安全标准。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产生并返回一个Token（令牌），用户可以使用这个token访问服务器上受保护的资源。<br>OAuth2是一种授权框架 ，提供了一套详细的授权机制（指导）。用户或应用可以通过公开的或私有的设置，授权第三方应用访问特定资源。在讨论OAuth2的实现时，会把JSON Web Token作为一种认证机制使用。</p>
 <p>JWT主要是三部分组成，head ，clamis，signature。head是简单声明类型（JWT）和产生签名所使用的算法。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">"alg"</span> : <span class="string">"AES256"</span>,</span><br><span class="line"><span class="string">"typ"</span> : <span class="string">"JWT"</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>clamis声明，是包含用户的信息，<br>signature 签名，即秘钥，用来加密clamis信息形成token。</p>
@@ -441,6 +440,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">hello</a>
               </li>
              
@@ -453,6 +456,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jwt</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
@@ -462,18 +473,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jwt</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
              
               <li class="article-tag-list-item">
