@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-23T07:49:41.428Z">
+<meta property="og:updated_time" content="2019-01-23T08:08:21.992Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码学习之spring core （二）">
 <meta name="twitter:description" content="简述在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。">
@@ -182,7 +182,6 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>在上一篇，我主要是讲述了ioc容器的概念和使用。这一篇，我准备介绍spring core 中另一个关键的基础组件，Bean。在Spring中，构成应用程序主干并由Spring  IoC容器管理的对象称为bean。bean是一个由Spring IoC容器实例化，组装和管理的对象。否则，bean只是应用程序中众多对象之一。Bean及其之间的依赖关系反映在容器使用的配置元数据中。<br><a id="more"></a></p>
-<hr>
 <h2 id="Bean的命名与实例化"><a href="#Bean的命名与实例化" class="headerlink" title="Bean的命名与实例化"></a>Bean的命名与实例化</h2><p>在IOC容器中，这些bean定义表示为BeanDefinition对象。它有一些属性，这些属性都是在上一篇中配置元数据的配置。包括：</p>
 <ul>
 <li>包限定的类名：通常是正在定义的bean的实际实现类。</li>
@@ -202,7 +201,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> TestBean peoBean;</span><br></pre></td></tr></table></figure>
 <p>这里TestBean的实例就是我们@Bean注册的，而不是原来的TestBean。当你getName()时它的值是peo，同时你@Autowired的对象有多个，你可以通过@Qualifier来指明你所需要注入的类。</p>
 <p>当你使用一个自己构建的bean再成为另一个自建的bean的参数时：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@Configuration</span></span><br><span class="line">      <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line">      <span class="meta">@Bean</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> TestBean <span class="title">peoBean</span><span class="params">()</span></span>&#123;</span><br><span class="line">          TestBean bean=<span class="keyword">new</span> TestBean();</span><br><span class="line">          bean.setName(<span class="string">"peo"</span>);</span><br><span class="line">          <span class="keyword">return</span>  bean;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> BigBean  <span class="title">bigbean</span><span class="params">()</span></span>&#123;</span><br><span class="line">    BigBean bean=<span class="keyword">new</span> BigBean(peoBean());  </span><br><span class="line">	<span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">@Configuration</span></span><br><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Bean</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> TestBean <span class="title">peoBean</span><span class="params">()</span></span>&#123;</span><br><span class="line">          TestBean bean=<span class="keyword">new</span> TestBean();</span><br><span class="line">          bean.setName(<span class="string">"peo"</span>);</span><br><span class="line">          <span class="keyword">return</span>  bean;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> BigBean  <span class="title">bigbean</span><span class="params">()</span></span>&#123;</span><br><span class="line">    BigBean bean=<span class="keyword">new</span> BigBean(peoBean());  </span><br><span class="line">	<span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>还有一种通过静态工厂类来创建对象的，有兴趣的可以在spring官方文档学习。</p>
 
       
@@ -432,14 +431,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">work</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">springboot</a>
               </li>
              
@@ -449,6 +440,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Solace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">work</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -473,6 +468,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jwt</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
              
               <li class="article-tag-list-item">

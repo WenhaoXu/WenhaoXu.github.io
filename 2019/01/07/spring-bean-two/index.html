@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Howells Blog">
 <meta property="og:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-18T05:41:57.013Z">
+<meta property="og:updated_time" content="2019-01-28T02:34:53.271Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码学习之依赖及依赖相关问题 （三）">
 <meta name="twitter:description" content="简述关于依赖，前面也介绍了一点，这篇博客会更加深入的学习依赖，主要是spring 中如何去实现依赖注入。在前面的博客中，我们就知道依赖注入的几种方式。基于构造函数的注入和基于setter的注入。">
@@ -194,6 +194,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.BeansException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContextAware;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommandManager</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">process</span><span class="params">(Map commandState)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// grab a new instance of the appropriate Command</span></span><br><span class="line">        Command command = createCommand();</span><br><span class="line">        <span class="comment">// set the state on the (hopefully brand new) Command instance</span></span><br><span class="line">        command.setState(commandState);</span><br><span class="line">        <span class="keyword">return</span> command.execute();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Command <span class="title">createCommand</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// notice the Spring API dependency!</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.applicationContext.getBean(<span class="string">"command"</span>, Command.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>但是spring 官方是不推荐这种方式的，因为业务代码知道并耦合到Spring Framework里了。官方推荐的是Lookup 方法注入。@Lookup对于：将原型范围的bean注入单例bean（类似于Provider），以程序方式注入依赖项。所以Lookup通常涉及原型bean。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="comment">//@Scope("prototype")</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span>  <span class="class"><span class="keyword">class</span> <span class="title">StudentServices</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... member variables, etc.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Lookup</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">abstract</span>  SchoolNotification <span class="title">getNotification</span><span class="params">()</span> </span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... getters and setters</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope</span>(<span class="string">"prototype"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SchoolNotification</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ... prototype-scoped state</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在其他web-层面scope的bean的周期的注入"><a href="#在其他web-层面scope的bean的周期的注入" class="headerlink" title="在其他web 层面scope的bean的周期的注入"></a>在其他web 层面scope的bean的周期的注入</h2><p>除了我们常见的单例和原型bean，在另一种webApplicationcontext中有web相关的bean周期，request ，session，application。他们之间当短周期注入到single周期的bean中，由于single周期只创建一次，它注入的bean的对象应该一直保持一致。他们是在短周期的bean中添加<a href="aop:scoped-proxy/" target="_blank" rel="noopener">aop:scoped-proxy/</a>，使得他能够在single周期的bean中使用。这其中是采用代理的方式，</p>
 <h2 id="Autowried-Resource的区别"><a href="#Autowried-Resource的区别" class="headerlink" title="@Autowried @Resource的区别"></a>@Autowried @Resource的区别</h2><p>在前面提到过，@Autowried @Resource都是基于setter方式的装配Bean，他们都可以放在字段上或者是set方法上。</p>
 <ol>
 <li>@Autowried是spring里的注解，而@Resource是jdk 1.6的注解。</li>
@@ -441,14 +442,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">work</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">springboot</a>
               </li>
              
@@ -458,6 +451,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Solace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">work</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -482,6 +479,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jwt</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
              
               <li class="article-tag-list-item">
