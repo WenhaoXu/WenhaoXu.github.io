@@ -18,7 +18,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/01/31/oauth2-jwt/oauth2.png">
 <meta property="og:image" content="http://yoursite.com/2019/01/31/oauth2-jwt/password_model.png">
-<meta property="og:updated_time" content="2019-02-13T06:34:00.214Z">
+<meta property="og:updated_time" content="2019-02-15T04:29:32.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OAuth2和JWT,以及spring security在springboot中的实践">
 <meta name="twitter:description" content="OAtuh2和JWT在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。">
@@ -184,7 +184,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="OAtuh2和JWT"><a href="#OAtuh2和JWT" class="headerlink" title="OAtuh2和JWT"></a>OAtuh2和JWT</h2><p>在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。<br><a id="more"></a><br>JWT（json web token）是一种安全标准。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产生并返回一个Token（令牌），用户可以使用这个token访问服务器上受保护的资源。<br>OAuth2是一种授权框架 ，提供了一套详细的授权机制（指导）。用户或应用可以通过公开的或私有的设置，授权第三方应用访问特定资源。在讨论OAuth2的实现时，会把JSON Web Token作为一种认证机制使用。</p>
+        <h2 id="OAtuh2和JWT"><a href="#OAtuh2和JWT" class="headerlink" title="OAtuh2和JWT"></a>OAtuh2和JWT</h2><p>在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。<br><a id="more"></a><br>JWT（json web token）是一种安全标准, 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519)。基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息信息的合法性；如果验证成功，会产生并返回一个Token（令牌），用户可以使用这个token访问服务器上受保护的资源。<br>OAuth2是一种授权框架 ，提供了一套详细的授权机制（指导）。用户或应用可以通过公开的或私有的设置，授权第三方应用访问特定资源。在讨论OAuth2的实现时，会把JSON Web Token作为一种认证机制使用。</p>
+<h3 id="jwt的产生"><a href="#jwt的产生" class="headerlink" title="jwt的产生"></a>jwt的产生</h3><p>http协议本身是一种无状态的协议，而这就意味着如果用户向我们的应用提供了用户名和密码来进行用户认证，那么下一次请求时，用户还要再一次进行用户认证才行，因为根据http协议，我们并不能知道是哪个用户发出的请求，所以为了让我们的应用能识别是哪个用户发出的请求，我们只能在服务器存储一份用户登录的信息，这份登录信息会在响应时传递给浏览器，告诉其保存为cookie,以便下次请求时发送给我们的应用，这样我们的应用就能识别请求来自哪个用户了,这就是传统的基于session认证。</p>
+<p>基于session认证所显露的问题<br>Session: 每个用户经过我们的应用认证之后，我们的应用都要在服务端做一次记录，以方便用户下次请求的鉴别，通常而言session都是保存在内存中，而随着认证用户的增多，服务端的开销会明显增大。<br>扩展性: 用户认证之后，服务端做认证记录，如果认证的记录被保存在内存中的话，这意味着用户下次请求还必须要请求在这台服务器上,这样才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力。这也意味着限制了应用的扩展能力。<br>CSRF: 因为是基于cookie来进行用户识别的, cookie如果被截获，用户就会很容易受到跨站请求伪造的攻击。<br>基于token的鉴权机制<br>基于token的鉴权机制类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。这就意味着基于token认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利。<br>流程上是这样的：<br>•    用户使用用户名密码来请求服务器<br>•    服务器进行验证用户的信息<br>•    服务器通过验证发送给用户一个token<br>•    客户端存储token，并在每次请求时附送上这个token值<br>•    服务端验证token值，并返回数据<br>这个token必须要在每次请求时传递给服务端，它应该保存在请求头里， 另外，服务端要支持CORS(跨来源资源共享)策略，一般我们在服务端这么做就可以了Access-Control-Allow-Origin: *。</p>
 <p>JWT主要是三部分组成，head ，clamis，signature。head是简单声明类型（JWT）和产生签名所使用的算法。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">"alg"</span> : <span class="string">"AES256"</span>,</span><br><span class="line"><span class="string">"typ"</span> : <span class="string">"JWT"</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>clamis声明，是包含用户的信息，<br>signature 签名，即秘钥，用来加密clamis信息形成token。</p>
@@ -424,6 +426,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">hello</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">springboot</a>
               </li>
              
@@ -440,11 +446,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
+                <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">hello</a>
+                <a href="javascript:void(0)" class="js-tag color4">jwt</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -453,14 +459,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jwt</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -473,6 +471,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">learn</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">solrJ</a>
               </li>
              
               <li class="article-tag-list-item">
