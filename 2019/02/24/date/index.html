@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019 | Howells Blog</title>
+  <title>Java 1.8 时间处理 | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howells Blog">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+  <meta name="description" content="前后版本的date类的对比对于1.8之前来说，我们在java中使用date更多的是使用java.util.Date类，但是由于他与SimpleDateFormatter都不是线程安全的，所以也是会出现一些问题，而且他与数据库的date类比较类似，也容易导错包。所以在1.8之后，我们更偏向于使用1.8新加的date类。LocalTime ,LocalDate,LocalDateTime。">
+<meta name="keywords" content="jdk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 1.8 时间处理">
+<meta property="og:url" content="http://yoursite.com/2019/02/24/date/index.html">
 <meta property="og:site_name" content="Howells Blog">
+<meta property="og:description" content="前后版本的date类的对比对于1.8之前来说，我们在java中使用date更多的是使用java.util.Date类，但是由于他与SimpleDateFormatter都不是线程安全的，所以也是会出现一些问题，而且他与数据库的date类比较类似，也容易导错包。所以在1.8之后，我们更偏向于使用1.8新加的date类。LocalTime ,LocalDate,LocalDateTime。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-25T06:17:27.990Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Howells Blog">
+<meta name="twitter:title" content="Java 1.8 时间处理">
+<meta name="twitter:description" content="前后版本的date类的对比对于1.8之前来说，我们在java中使用date更多的是使用java.util.Date类，但是由于他与SimpleDateFormatter都不是线程安全的，所以也是会出现一些问题，而且他与数据库的date类比较类似，也容易导错包。所以在1.8之后，我们更偏向于使用1.8新加的date类。LocalTime ,LocalDate,LocalDateTime。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -156,78 +161,40 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-date" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/03/maven/" class="archive-article-date">
-  	<time datetime="2019-03-03T02:23:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/03/maven/">maven 插件和命令整理</a>
+    <h1 class="article-title" itemprop="name">
+      Java 1.8 时间处理
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">maven</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/02/24/date/" class="archive-article-date">
+        
+        <a href="/2019/02/24/date/" class="archive-article-date">
   	<time datetime="2019-02-24T06:15:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-24</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/02/24/date/">Java 1.8 时间处理</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前后版本的date类的对比"><a href="#前后版本的date类的对比" class="headerlink" title="前后版本的date类的对比"></a>前后版本的date类的对比</h2><p>对于1.8之前来说，我们在java中使用date更多的是使用java.util.Date类，但是由于他与SimpleDateFormatter都不是线程安全的，所以也是会出现一些问题，而且他与数据库的date类比较类似，也容易导错包。所以在1.8之后，我们更偏向于使用1.8新加的date类。LocalTime ,LocalDate,LocalDateTime。</p>
+<a id="more"></a>
+<h2 id="1-8-date类的使用"><a href="#1-8-date类的使用" class="headerlink" title="1.8 date类的使用"></a>1.8 date类的使用</h2><p>1.8的date类主要是这三个LocalTime ,LocalDate,LocalDateTime。<br>LocalDate 各种和日期的操作，以天为最小单位，支持　日，月，年，星期的增加和减少，计算方便，格式化灵活。没有时分秒。 有点像之前的calendar<br>LocalTime 没有日期，只是时间，就是时分秒，毫秒，可以选择不用毫秒，可以进行相应的加减计算。<br>LocalDateTime 完整时间，年月日，时分秒。可以进行unix  timestamp毫秒转换，LocalDate，LocalTime　都不行。LocalDateTime有点类似于原来的date 类。</p>
+<p>LocalDate的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2019-02-18</span></span><br><span class="line">LocalDate date=LocalDate.now();</span><br><span class="line">LocalDate localDate1 = LocalDate.of(<span class="number">2017</span>, <span class="number">11</span>, <span class="number">10</span>);</span><br><span class="line">localDate.parse(<span class="string">"2019-02-12"</span>)；<span class="comment">//parse(CharSequence text,dateformat);</span></span><br><span class="line">date.getYear();<span class="comment">//获取年份。</span></span><br><span class="line">date.getDayOfYear()<span class="comment">//获取当前天在整年的天数  dayOfMonth  OfWeek。</span></span><br><span class="line"><span class="comment">// 取本月第1天的日期：2019-02-01</span></span><br><span class="line">LocalDate firstDayOfThisMonth = localDate.with(TemporalAdjusters.firstDayOfMonth());</span><br><span class="line"><span class="comment">// 取本月第2天：</span></span><br><span class="line">LocalDate secondDayOfThisMonth = localDate.withDayOfMonth(<span class="number">2</span>);</span><br><span class="line"><span class="comment">// 取本月最后一天，再也不用计算是28，29，30还是31：</span></span><br><span class="line">LocalDate lastDayOfThisMonth = localDate.with(TemporalAdjusters.lastDayOfMonth());</span><br><span class="line"><span class="comment">// 取下一天：</span></span><br><span class="line">LocalDate firstDayOf2015 = localDate.plusDays(<span class="number">1</span>);</span><br><span class="line">System.out.println(firstDayOf2015);</span><br></pre></td></tr></table></figure></p>
+<p>LocalTime的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LocalTime use</span></span><br><span class="line">LocalTime time=LocalTime.now(); <span class="comment">//16:17:54.135</span></span><br><span class="line">LocalTime now = LocalTime.now().withNano(<span class="number">0</span>)); <span class="comment">// 11:09:09</span></span><br><span class="line">LocalTime bedTime=LocalTime.of(<span class="number">22</span>, <span class="number">10</span>); <span class="comment">//localTime.of(hour,minute,second,nanoOfSecond)</span></span><br><span class="line">time.parse(<span class="string">"16:17:54"</span>);<span class="comment">// "16:17","16:17:54.135" localTime.parse(harSequence text,dateformat);</span></span><br><span class="line"><span class="comment">//还有就是日期的加减</span></span><br></pre></td></tr></table></figure></p>
+<p>LocalDateTime的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> LocalDateTime dateTime = LocalDateTime.now();</span><br><span class="line">    </span><br><span class="line"><span class="comment">//使用预定义实例来转换</span></span><br><span class="line">DateTimeFormatter fmt = DateTimeFormatter.ISO_LOCAL_DATE;</span><br><span class="line">String dateStr = dateTime.format(fmt);</span><br><span class="line">System.out.println(<span class="string">"LocalDateTime转String[预定义]:"</span>+dateStr);</span><br><span class="line">    </span><br><span class="line"><span class="comment">//使用pattern来转换      </span></span><br><span class="line"><span class="comment">//12小时制与24小时制输出由hh的大小写决定</span></span><br><span class="line">DateTimeFormatter fmt12 = DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd hh:mm:ss:SSS"</span>);</span><br><span class="line">String dateStr12 = dateTime.format(fmt12);</span><br><span class="line">System.out.println(<span class="string">"LocalDateTime转String[pattern](12小时制):"</span>+dateStr12);</span><br><span class="line">    </span><br><span class="line">DateTimeFormatter fmt24 = DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss:SSS"</span>);       </span><br><span class="line">String dateStr24 = dateTime.format(fmt24);      </span><br><span class="line">System.out.println(<span class="string">"LocalDateTime转String[pattern](24小时制):"</span>+dateStr24);</span><br><span class="line"></span><br><span class="line">String str = <span class="string">"2017-11-21 14:41:06:612"</span>;</span><br><span class="line">DateTimeFormatter fmt = DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss:SSS"</span>);     </span><br><span class="line">LocalDate date = LocalDate.parse(str, fmt);</span><br><span class="line">LocalDateTime time = LocalDateTime.parse(str, fmt);</span><br><span class="line">System.out.println(<span class="string">"date:"</span>+date);</span><br><span class="line">System.out.println(<span class="string">"time:"</span>+time);</span><br></pre></td></tr></table></figure></p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -239,191 +206,115 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/02/24/date/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/31/oauth2-jwt/" class="archive-article-date">
-  	<time datetime="2019-01-31T06:33:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-31</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2019/03/03/maven/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          maven 插件和命令整理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/31/oauth2-jwt/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">OAuth2和JWT,以及spring security在springboot中的实践</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/31/oauth2-jwt/">OAuth2和JWT,以及spring security在springboot中的实践</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oauth2</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jwt</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/16/webservice/" class="archive-article-date">
-  	<time datetime="2019-01-16T05:41:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/16/webservice/">webservice</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Webservice</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/10/middle-stage/" class="archive-article-date">
-  	<time datetime="2019-01-10T01:58:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/10/middle-stage/">阿里中台战略读后感</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">framework</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/07/spring-bean-two/" class="archive-article-date">
-  	<time datetime="2019-01-07T07:00:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/07/spring-bean-two/">Spring源码学习之依赖及依赖相关问题 （三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Ioc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -446,8 +337,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

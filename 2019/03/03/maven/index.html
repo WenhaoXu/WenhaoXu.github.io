@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019 | Howells Blog</title>
+  <title>maven 插件和命令整理 | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howells Blog">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+  <meta name="description" content="在大多数项目中，我们会使用maven来构建项目的依赖下载以及项目的打包操作，但是我原来对于maven的命令不是很理解他们的具体流程和原理。所以就打算写这一篇来整理下。">
+<meta name="keywords" content="maven,learn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="maven 插件和命令整理">
+<meta property="og:url" content="http://yoursite.com/2019/03/03/maven/index.html">
 <meta property="og:site_name" content="Howells Blog">
+<meta property="og:description" content="在大多数项目中，我们会使用maven来构建项目的依赖下载以及项目的打包操作，但是我原来对于maven的命令不是很理解他们的具体流程和原理。所以就打算写这一篇来整理下。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-04T02:26:38.297Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Howells Blog">
+<meta name="twitter:title" content="maven 插件和命令整理">
+<meta name="twitter:description" content="在大多数项目中，我们会使用maven来构建项目的依赖下载以及项目的打包操作，但是我原来对于maven的命令不是很理解他们的具体流程和原理。所以就打算写这一篇来整理下。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -156,36 +161,43 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-maven" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/03/maven/" class="archive-article-date">
-  	<time datetime="2019-03-03T02:23:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/03/maven/">maven 插件和命令整理</a>
+    <h1 class="article-title" itemprop="name">
+      maven 插件和命令整理
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/03/03/maven/" class="archive-article-date">
+  	<time datetime="2019-03-03T02:23:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在大多数项目中，我们会使用maven来构建项目的依赖下载以及项目的打包操作，但是我原来对于maven的命令不是很理解他们的具体流程和原理。所以就打算写这一篇来整理下。<br><a id="more"></a></p>
+<h2 id="maven-插件功能"><a href="#maven-插件功能" class="headerlink" title="maven 插件功能"></a>maven 插件功能</h2><p>在我们使用maven命令时，往往一个命令就是多个插件共同作用的结果，所以在maven命令之前，要先了解maven插件。</p>
+<h3 id="clean插件maven-clean-plugin-2-5"><a href="#clean插件maven-clean-plugin-2-5" class="headerlink" title="clean插件maven-clean-plugin:2.5"></a>clean插件maven-clean-plugin:2.5</h3><p>clean阶段是独立的一个阶段，功能就是清除工程目前下的target目录，对应的插件是 maven-clean-plugin:2.5，2.5是版本号，可以使用maven内置的插件，当然也可以自己在pom中配置。</p>
+<h3 id="resources插件maven-resources-plugin-2-6"><a href="#resources插件maven-resources-plugin-2-6" class="headerlink" title="resources插件maven-resources-plugin:2.6"></a>resources插件maven-resources-plugin:2.6</h3><p>resource插件的功能就是把项目需要的配置文件拷贝到指定的目当，默认是拷贝src\main\resources目录下的件到classes目录下，当然可以自己来配置源目录和输出目录。resources插件一般不单独执行，complie插件执行时会先调用resources插件。</p>
+<h3 id="compile插件maven-compiler-plugin"><a href="#compile插件maven-compiler-plugin" class="headerlink" title="compile插件maven-compiler-plugin"></a>compile插件maven-compiler-plugin</h3><p>compile插件执行时先调用resouces插件，功能就是把src\main下 java源码和配置文件编译成字节码生成class文件，并把编译好的class文件输出到target\classes目录下。</p>
+<h3 id="单元测试所用插件"><a href="#单元测试所用插件" class="headerlink" title="单元测试所用插件"></a>单元测试所用插件</h3><p>单元测试所用的compile和resources插件和主代码是相同的，但执行的目标不行，目标estCompile和testResources是把src\test\java下的代码编译成字节码输出到target\test-classes，同时把src\test\resources下的配置文件拷贝到target\test-classes。<br>插件maven-surefire-plugin:2.12.4 ：test 是执行单元测试类的，它在测试的resource和compile之后执行。如果单测试不通行，构建会失败，在编译正式的项目时可以使用mvn -Dmaven.test.skip=true 来跳过测试类的编译和运行过程。</p>
+<h3 id="打包插件"><a href="#打包插件" class="headerlink" title="打包插件"></a>打包插件</h3><p>这个插件是把class文件、配置文件打成一个jar(war或其它格式)包。依赖包是不在jar里面的，需要建立lib目录，且jar和lib目录在同级目录。常用的打包插件有maven-jar-plugin、maven-assembly-plugin、maven-shade-plugin三种。<br>maven-jar-plugin ：可执行jar与依赖包是分开，需建立lib目录里来存放需要的j依赖包，且需要jar和lib目录在同级目录。</p>
+<h3 id="发布插件maven-install-plugin"><a href="#发布插件maven-install-plugin" class="headerlink" title="发布插件maven-install-plugin"></a>发布插件maven-install-plugin</h3><p>发布插件的功能就是把构建好的artifact部署到本地仓库。<br>deploy插件是将构建好的artifact部署到远程仓库。</p>
+<h2 id="maven-命令"><a href="#maven-命令" class="headerlink" title="maven 命令"></a>maven 命令</h2><p>mvn clean package依次执行了clean、resources、compile、testResources、testCompile、test、jar(打包)等７个阶段。<br>mvn clean install依次执行了clean、resources、compile、testResources、testCompile、test、jar(打包)、install等8个阶段。<br>mvn clean deploy依次执行了clean、resources、compile、testResources、testCompile、test、jar(打包)、install、deploy等９个阶段。<br>从上面的执行命令来看：<br>package命令完成了项目编译、单元测试、打包功能，但没有把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库和远程maven私服仓库<br>install命令完成了项目编译、单元测试、打包功能，同时把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库，但没有布署到远程maven私服仓库<br>deploy命令完成了项目编译、单元测试、打包功能，同时把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库和远程maven私服仓库。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -201,229 +213,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/03/03/maven/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/02/24/date/" class="archive-article-date">
-  	<time datetime="2019-02-24T06:15:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-24</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/02/24/date/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java 1.8 时间处理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/02/24/date/">Java 1.8 时间处理</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jdk</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/31/oauth2-jwt/" class="archive-article-date">
-  	<time datetime="2019-01-31T06:33:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/31/oauth2-jwt/">OAuth2和JWT,以及spring security在springboot中的实践</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oauth2</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jwt</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/16/webservice/" class="archive-article-date">
-  	<time datetime="2019-01-16T05:41:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/16/webservice/">webservice</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Webservice</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/10/middle-stage/" class="archive-article-date">
-  	<time datetime="2019-01-10T01:58:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/10/middle-stage/">阿里中台战略读后感</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">framework</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/07/spring-bean-two/" class="archive-article-date">
-  	<time datetime="2019-01-07T07:00:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/07/spring-bean-two/">Spring源码学习之依赖及依赖相关问题 （三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Spring</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Ioc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -446,8 +335,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
