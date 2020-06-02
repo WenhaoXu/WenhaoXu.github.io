@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/03/23/webflux/webhandler.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/23/webflux/dispatcherWebhandler.png">
 <meta property="og:image" content="http://yoursite.com/2019/03/23/webflux/flow.png">
-<meta property="og:updated_time" content="2019-03-27T06:27:46.982Z">
+<meta property="og:updated_time" content="2019-03-27T07:25:12.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring WebFlux 初了解">
 <meta name="twitter:description" content="简介Webflux是spring5的新框架。它的产生是多方面的因素，在servlet3.1规范发布之后，java 8也发布了，它的语法更加丰富，并且支持响应式编程。所以顺应这个潮流，spring也发布了新一代的响应式web框架。它与springmvc有所不同。">
@@ -192,6 +192,8 @@
 <h2 id="WebFlux"><a href="#WebFlux" class="headerlink" title="WebFlux"></a>WebFlux</h2><p>在servlet3.1之前，web容器就是基于阻塞机制开发的，但是3.1之后，就开始了非阻塞的规范。spring webflux支持3.1+容器。springboot 对于springflux的starter中默认依赖netty。<br>spring webflux的框架结构：<br><img src="/2019/03/23/webflux/webflux.png" title="架构图"><br>webflux框架对于响应式编程来说，分为Route Functions ，spring webflux和HTTP/Reactive Streams 三层<br>Route Functions：是路由分发层，根据请求的事件决定使用什么类和方法来处理。在reactor模式中，起selector的作用。<br>Spring-WebFlux：是一种控制层，类似于springmvc框架的层级。它主要是处理业务逻辑前进行的封装和控制数据流返回格式。<br>HTTP/Reactive Streams：将结果转换为数据流的过程。</p>
 <h3 id="WebHandler"><a href="#WebHandler" class="headerlink" title="WebHandler"></a>WebHandler</h3><p>与springmvc的dispactcherServlet类似。WebFlux使用的是WebHandler。webHandler是一个接口，为此，webflux为它提供了几个实现类。其中DispatcherHandler是核心，WebHandlerDecorator是一个装饰者。采用了装饰者模式来装饰WebHandler。但是实际上并没有改变WebHandler的执行本质。ResourceWebHandler是资源的管理器，主要是处理文件和其他资源的。<br><img src="/2019/03/23/webflux/webhandler.png"></p>
 <p>DispatcherHandler的源码：<br><img src="/2019/03/23/webflux/dispatcherWebhandler.png" title="源码"><br>从代码里可以看到，它与springmvc一样，从handlerMapping里找到对应的处理器。这也是为什么webflux也沿用了@Controller，@RequestMapping等注解的原因。通过这些配置路径就可以通过getHandler的方法找到对应的处理器。<br><img src="/2019/03/23/webflux/flow.png" title="流程图"><br>在开发中，需要引入mongodb的依赖，因为webflux只支持spring data Reactive 。它是一种非阻塞的数据响应方式。但是数据库的开发一般是阻塞的，所以spring data Reactive并不能对数据库的开发给予有效支持，如果需要使用到数据库的场景，则要处理很多细节，实用性不大。但是spring data Reactive可以支持redis mongo 等nosql的开发，而redis更多的作为缓存使用，所以一般是使用mongo来作为webflux的数据库。它的依赖是spring-boot-starter-data-mongodb-reactive。使用webflux时，不能添加starter-web因为他会默认加载springmvc。</p>
+<h2 id="WebFlux与微服务"><a href="#WebFlux与微服务" class="headerlink" title="WebFlux与微服务"></a>WebFlux与微服务</h2><p>在微服务以及springcloud里我们知道，一般服务之间的通信是通过api或者消息中间件。springcloud里可以使用RestTemplate或者Feign来进行api请求，在WebFlux里，它提供另一个类WebClient。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">WebClient client =WebClient.create(URL);</span><br><span class="line">User newUser=<span class="keyword">new</span> User();</span><br><span class="line">Mono&lt;USer&gt; user=client.post()</span><br><span class="line">                      .uri(<span class="string">"/user"</span>)</span><br><span class="line">                      .contentType(MediaType.APPLICATION_STREAM_JSON)</span><br><span class="line">                      .body(Mono.just(newUser),User)</span><br><span class="line">                      .accept(MediaType.APPLICATION_STREAM_JSON)</span><br><span class="line">                      <span class="comment">//设置请求结果检索规则</span></span><br><span class="line">                      .retrieve()</span><br><span class="line">                      </span><br><span class="line"><span class="comment">//结果转成Mono结构</span></span><br><span class="line">                      .bodyToMono(User.class);</span><br><span class="line">User result=user.block();</span><br><span class="line"><span class="comment">//结果转换成Flux结构</span></span><br><span class="line">                       .bodyToFlux(User.class);</span><br><span class="line">Iterator&lt;User&gt; iterator=user.toIterable().iterator();</span><br></pre></td></tr></table></figure></p>
+<p>这是webflux客户端的简单用法。webflux的使用方式与springmvc还是有很多不同的，在微服务里security是不可以与webflux一起使用的，因为security是通过servlet的filter起作用的，webflux的servlet应该改变了。它会使用security reactive。</p>
 
       
 
@@ -279,6 +281,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2019/04/01/Git/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Git
+        
+      </div>
+    </a>
+  
   
     <a href="/2019/03/03/maven/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">maven 插件和命令整理</div>
@@ -324,7 +335,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 Howells
+    		&copy; 2020 Howells
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -407,18 +418,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">springboot</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Jms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Solace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">work</a>
               </li>
              
@@ -427,11 +426,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jdk</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">hello</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jdk</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -443,19 +446,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">framework</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Oauth2</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">jwt</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">framework</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -475,7 +482,35 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">echarts</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">springboot</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Jms</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Solace</a>
               </li>
             
             <div class="clearfix"></div>
