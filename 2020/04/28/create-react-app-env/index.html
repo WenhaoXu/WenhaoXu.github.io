@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>create-react-app 实践-环境配置 | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。 创建与配置  创建就不用说了。一句命令就可以了。 npm init react-app my-app 接下来就是配置了，我们知道一个完整项目，它必然需要多个环境的配置，以便我们在上prod">
+  <meta name="description" content="前言  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。">
 <meta name="keywords" content="work,react">
 <meta property="og:type" content="article">
 <meta property="og:title" content="create-react-app 实践-环境配置">
 <meta property="og:url" content="http://yoursite.com/2020/04/28/create-react-app-env/index.html">
 <meta property="og:site_name" content="Howells Blog">
-<meta property="og:description" content="前言  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。 创建与配置  创建就不用说了。一句命令就可以了。 npm init react-app my-app 接下来就是配置了，我们知道一个完整项目，它必然需要多个环境的配置，以便我们在上prod">
+<meta property="og:description" content="前言  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-05-22T05:53:38.190Z">
+<meta property="og:updated_time" content="2020-06-04T02:28:18.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="create-react-app 实践-环境配置">
-<meta name="twitter:description" content="前言  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。 创建与配置  创建就不用说了。一句命令就可以了。 npm init react-app my-app 接下来就是配置了，我们知道一个完整项目，它必然需要多个环境的配置，以便我们在上prod">
+<meta name="twitter:description" content="前言  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -181,7 +181,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。<br> <a id="more"></a></p>
 <h2 id="创建与配置"><a href="#创建与配置" class="headerlink" title="创建与配置"></a>创建与配置</h2><p>  创建就不用说了。一句命令就可以了。</p>
 <pre><code>npm init react-app my-app
 </code></pre><p>接下来就是配置了，我们知道一个完整项目，它必然需要多个环境的配置，以便我们在上prod之前进行测试，所以环境文件的配置就是我们需要考虑的。<br>如果我们是用create-react-app来初始化项目的话，项目有内置的环境变量 NODE_ENV, 在 JavaScript 代码中可通过 process.env.NODE_ENV 读取它。NODE_ENV  默认有三个可能的值，分别是 development, test 和 production, 对应开发，测试，生产环境。运行 npm start, NODE_ENV 的值为 development; npm run test 则是 test; npm run build 则对应 prodution.<br>但是我们有时候可能想在配置每个环境对应的后端的url，一种方式当然是读取NODE_ENV 然后去选择不同的url，另一种我们可以直接把这些配置写在每个配置文件里，每个配置文件里的变量都是永久变量，要创建这些文件，你可以在根目录下创建名为 .env 的文件，</p>
@@ -287,6 +287,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/05/24/cvs-format-with-chinese/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          传输带有中文的csv的解决方法
+        
+      </div>
+    </a>
   
   
     <a href="/2019/10/10/vue-echarts/" id="article-nav-older" class="article-nav-link-wrap">
@@ -424,15 +433,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">hello</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">jdk</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -452,10 +469,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">framework</a>
               </li>
              
@@ -472,14 +485,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">webflux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -492,11 +497,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color3">webflux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
               </li>
              
               <li class="article-tag-list-item">

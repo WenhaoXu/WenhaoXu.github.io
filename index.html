@@ -158,6 +158,144 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-computer-network-study-part-one" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/04/computer-network-study-part-one/">computer-network-study-part-one</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/04/computer-network-study-part-one/" class="archive-article-date">
+  	<time datetime="2020-06-04T05:43:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/04/computer-network-study-part-one/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-cvs-format-with-chinese" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/24/cvs-format-with-chinese/">传输带有中文的csv的解决方法</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/24/cvs-format-with-chinese/" class="archive-article-date">
+  	<time datetime="2020-05-24T01:57:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在工作里遇到了一个问题，在用nodemailer来发送邮件的时候，由于附件是csv，而且里面还包含了中文字符，导致在邮件里打开csv的时候乱码了，所以记录下这个解决方法，以及其它方式下载传输csv中解决乱码的问题。<br></p>
+        
+          <a class="article-more-a" href="/2020/05/24/cvs-format-with-chinese/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">work</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/24/cvs-format-with-chinese/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-create-react-app-env" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -178,27 +316,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。</p>
-<h2 id="创建与配置"><a href="#创建与配置" class="headerlink" title="创建与配置"></a>创建与配置</h2><p>  创建就不用说了。一句命令就可以了。</p>
-<pre><code>npm init react-app my-app
-</code></pre><p>接下来就是配置了，我们知道一个完整项目，它必然需要多个环境的配置，以便我们在上prod之前进行测试，所以环境文件的配置就是我们需要考虑的。<br>如果我们是用create-react-app来初始化项目的话，项目有内置的环境变量 NODE_ENV, 在 JavaScript 代码中可通过 process.env.NODE_ENV 读取它。NODE_ENV  默认有三个可能的值，分别是 development, test 和 production, 对应开发，测试，生产环境。运行 npm start, NODE_ENV 的值为 development; npm run test 则是 test; npm run build 则对应 prodution.<br>但是我们有时候可能想在配置每个环境对应的后端的url，一种方式当然是读取NODE_ENV 然后去选择不同的url，另一种我们可以直接把这些配置写在每个配置文件里，每个配置文件里的变量都是永久变量，要创建这些文件，你可以在根目录下创建名为 .env 的文件，</p>
-<pre><code>- .env：默认。
-- .env.local：本地覆盖。除 test 之外的所有环境都加载此文件。
-- .env.development, .env.test, .env.production：设置特定环境。
-- .env.development.local, .env.test.local, .env.production.local：设置特定环境的本地覆盖。
-</code></pre><p>你也可以借助一些工具来显性设置：dotenv-cli(dotenv)<br>dotenv-cli是dotenv的封装， 可以让你在根目录创建.env。（注意：只能以 REACT_APP_ 开头）并且在package.json里</p>
-<pre><code>&quot;scripts&quot;: {
-&quot;start&quot;: &quot;react-app-rewired start&quot;,
-&quot;build:dev&quot;: &quot;dotenv -e .env.development react-app-rewired build&quot;,
-&quot;build:pro&quot;: &quot;dotenv -e .env.production react-app-rewired build&quot;,
-&quot;test&quot;: &quot;react-app-rewired test&quot;,
-&quot;eject&quot;: &quot;react-scripts eject&quot;
-}
-</code></pre><p>但是如果你的公司的环境太多，这几个无法满足，你可以使用cross-env 来创建变量</p>
-<pre><code>npm install --save-dev cross-env
-  package.json
-&quot;build:stage&quot;: &quot;cross-env REACT_APP_ENV=stage react-scripts build&quot;
-</code></pre>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  之前自己也用这个脚手架搭过react项目，但是那次只是一个浅显的尝试，然后前端时间，我从头到尾参与了一个react项目的启动和deploy prod，对于react有了一个更加全面的认识，所以记录下来。<br></p>
+        
+          <a class="article-more-a" href="/2020/04/28/create-react-app-env/#more">more >></a>
+        
       
 
       
@@ -390,6 +511,71 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/07/28/agent/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-virtual-machine-network-configuration" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/16/virtual-machine-network-configuration/">Virtual machine network configuration</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/16/virtual-machine-network-configuration/" class="archive-article-date">
+  	<time datetime="2019-05-16T05:34:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在虚拟机中进行开发python cs 架构的应用，所以对于多个虚拟机之间的网络有了兴趣，在网上查了一些资料。这里就是对一些资料的总结。<br></p>
+        
+          <a class="article-more-a" href="/2019/05/16/virtual-machine-network-configuration/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/16/virtual-machine-network-configuration/">展开全文 >></a>
         </p>
       
 
@@ -717,243 +903,6 @@
 
 
   
-    <article id="post-date" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/24/date/">Java 1.8 时间处理</a>
-    </h1>
-  
-
-        
-        <a href="/2019/02/24/date/" class="archive-article-date">
-  	<time datetime="2019-02-24T06:15:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前后版本的date类的对比"><a href="#前后版本的date类的对比" class="headerlink" title="前后版本的date类的对比"></a>前后版本的date类的对比</h2><p>对于1.8之前来说，我们在java中使用date更多的是使用java.util.Date类，但是由于他与SimpleDateFormatter都不是线程安全的，所以也是会出现一些问题，而且他与数据库的date类比较类似，也容易导错包。所以在1.8之后，我们更偏向于使用1.8新加的date类。LocalTime ,LocalDate,LocalDateTime。</p>
-        
-          <a class="article-more-a" href="/2019/02/24/date/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jdk</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/02/24/date/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-oauth2-jwt" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/31/oauth2-jwt/">OAuth2和JWT,以及spring security在springboot中的实践</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/31/oauth2-jwt/" class="archive-article-date">
-  	<time datetime="2019-01-31T06:33:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="OAtuh2和JWT"><a href="#OAtuh2和JWT" class="headerlink" title="OAtuh2和JWT"></a>OAtuh2和JWT</h2><p>在现在的web应用中，很多都在提倡前后端分离，然后之间使用api去连接。而使用api就会涉及到安全访问的问题，在解决安全问题时，有两种方案，OAtuh2和JWT。在很多的文章里，常常把他们混为一谈。但是他们两个是不同的东西。<br></p>
-        
-          <a class="article-more-a" href="/2019/01/31/oauth2-jwt/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oauth2</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jwt</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/31/oauth2-jwt/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-webservice" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/16/webservice/">webservice</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/16/webservice/" class="archive-article-date">
-  	<time datetime="2019-01-16T05:41:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>了解web service 先要知道web应用程序。Web应用程序是为了让通过web浏览器来访问web的平台相互协同工作，而被开发了出来。它是一个运行在web浏览器的简单应用程序。webservice可以把应用程序作为服务提供出去。或者是为不同的应用程序提供一种相互通信数据的路径。通过使用Webservices，我们可以在不同的应用程序与平台之间来交换数据。</p>
-<p>Web services 平台是简单的可共同操作的消息收发框架。它仍然缺少许多诸如安全和路由等重要的特性。但是，一旦 SOAP 变得更加高级，这些事项就会得到解决。<br></p>
-        
-          <a class="article-more-a" href="/2019/01/16/webservice/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">learn</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Webservice</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/16/webservice/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1059,15 +1008,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">hello</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">jdk</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1087,10 +1044,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">framework</a>
               </li>
              
@@ -1107,14 +1060,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">webflux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1127,11 +1072,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color3">webflux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Webservice</a>
               </li>
              
               <li class="article-tag-list-item">
