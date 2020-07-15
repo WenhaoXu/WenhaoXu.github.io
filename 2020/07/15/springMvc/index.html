@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: Oauth2 | Howells Blog</title>
+  <title>springBoot里请求的流转以及servlet的一些知识 | Howells Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howells Blog">
-<meta property="og:url" content="http://yoursite.com/tags/Oauth2/index.html">
+  <meta name="description" content="前言最近想整理一下请求在springboot中运行的轨迹，并且让自己对这部分更加熟悉。我主要的做法就是结合网上的一些文章，以及自己一步步debug，来弄清楚。">
+<meta name="keywords" content="springboot,servlet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springBoot里请求的流转以及servlet的一些知识">
+<meta property="og:url" content="http://yoursite.com/2020/07/15/springMvc/index.html">
 <meta property="og:site_name" content="Howells Blog">
+<meta property="og:description" content="前言最近想整理一下请求在springboot中运行的轨迹，并且让自己对这部分更加熟悉。我主要的做法就是结合网上的一些文章，以及自己一步步debug，来弄清楚。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/springMvc/request.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/springMvc/requestMappingHandler.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/springMvc/servlet-relationship.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/springMvc/filter.jpg">
+<meta property="og:updated_time" content="2020-07-15T11:33:48.346Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Howells Blog">
+<meta name="twitter:title" content="springBoot里请求的流转以及servlet的一些知识">
+<meta name="twitter:description" content="前言最近想整理一下请求在springboot中运行的轨迹，并且让自己对这部分更加熟悉。我主要的做法就是结合网上的一些文章，以及自己一步步debug，来弄清楚。">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/15/springMvc/request.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Howells Blog" type="application/atom+xml">
   
@@ -156,64 +166,175 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-springMvc" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/31/oauth2-jwt/" class="archive-article-date">
-  	<time datetime="2019-01-31T06:33:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-31</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/31/oauth2-jwt/">OAuth2和JWT,以及spring security在springboot中的实践</a>
+    <h1 class="article-title" itemprop="name">
+      springBoot里请求的流转以及servlet的一些知识
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/07/15/springMvc/" class="archive-article-date">
+  	<time datetime="2020-07-15T11:02:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近想整理一下请求在springboot中运行的轨迹，并且让自己对这部分更加熟悉。我主要的做法就是结合网上的一些文章，以及自己一步步debug，来弄清楚。<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="主体流程"><a href="#主体流程" class="headerlink" title="主体流程"></a>主体流程</h3><p>首先我们以一张经典的图来展开<br><img src="/2020/07/15/springMvc/request.jpg" title="流程图"></p>
+<p>这里大致描述一下流程<br>（1）客户端（浏览器）发送请求，直接请求到DispatcherServlet。</p>
+<p>（2）DispatcherServlet根据请求信息调用HandlerMapping，解析请求对应的Handler。 一个请求交给一个HandlerMapping时，这个HandlerMapping先找有没有处理器来处理这个请求，如何找到了，就执行拦截器，执行完拦截后，交给目标处理器。如果没有找到处理器，那么这个拦截器就不会被执行。</p>
+<p>（3）解析到对应的Handler后，开始由HandlerAdapter适配器处理。</p>
+<p>（4）HandlerAdapter会根据Handler来调用真正的处理器开处理请求，并处理相应的业务逻辑。</p>
+<p>（5）处理器处理完业务后，会返回一个ModelAndView对象，Model是返回的数据对象，View是个逻辑上的View。</p>
+<p>（6）ViewResolver会根据逻辑View查找实际的View。</p>
+<p>（7）DispaterServlet把返回的Model传给View。</p>
+<p>（8）通过View返回给请求者（浏览器）</p>
+<p>接下来，我将根据这个流程去一步步debug，看看具体是怎么做的。</p>
+<p>在springboot中的执行逻辑：<br>   在项目启动时，springboot会根据AbstractHandlerMethodMapping.detectHandlerMethods -&gt; RequestMappingHandlerMapping.getMappingForMethod 来把path与对应的执行函数进行映射。 </p>
+<p>当发起请求时：<br>   请求会进入web容器（常见的是tomcat）然后在进入之后，执行filter，执行完filter之后呢，就会进入DispatcherServlet ，执行DispatcherServlet父类的 service 方法，然后在调用DispatcherServlet的 doService-&gt;  doDispatch 函数，doDispatch这是处理请求的总函数，<br>   它会先判断是不是多请求，<br>   然后 执行本类中的getHandler函数。这个函数会把servlet中所有的handlerMapping(就是HandlerMapping接口的实现类) 遍历，<br>   然后用每个handlermapping 去根据path去匹配Handler 并生成HandlerExecutionChain， 并且会在创建过程中判断是否是跨域访问（request.getHeader(“Origin”) != null），是的话，还得在基础的handlerExcecutionChain之上创建一个含有cors的handlerExcecutionChain。<br>   然后根据HandlerExecutionChain 的handler 适配相应的HandlerAdapter（如 handlerExcecutionChain是由RequestMappingHandlerMapping创建的，那么相应的adapter就是RequestMappingHandlerAdapter） ，<br>   然后来执行 handlerAdapter.handle方法去执行controller里的方法，最后返回一个modelAndView，在最后处理mv</p>
+<p>   在这个流程中有个承担了发现和找寻对应的handler的类，那就是RequestMappingHandlerMapping ，它是在springboot中，将注解了@RequestMapping的类进行映射<br>   它的继承关系是<br>   <img src="/2020/07/15/springMvc/requestMappingHandler.jpg" title="RequestMappingHandlerMapping继承关系"></p>
+<h3 id="过滤器和拦截器"><a href="#过滤器和拦截器" class="headerlink" title="过滤器和拦截器"></a>过滤器和拦截器</h3><p>我上面是在介绍请求的主流程，那么其实在这些主流程中，还有两个很重要的概念，那就是过滤器和拦截器， 这两个东西我在大学的时候还只是死记硬背了下区别，现在回过头去看，发现他们的区别还是很好理解的。首先是他们两的位置：<br> <img src="/2020/07/15/springMvc/servlet-relationship.jpg" title="web容器重要概念图"></p>
+<p> Spring的拦截器与 Servlet的 Filter有相似之处,比如二者都是AOP编程思想的体现,都能实现权限检查、日志记录等。<br> 不同的是:<br>    使用范围不同: Filter是 Servlet规范规定的,只能用于Web程序中。而拦截器既可以用于Web程序,也可以用于 Application、 Swing程序中。<br>    规范不同: Filter是在 Servlet规范中定义的,是 Servlet容器支持的。而拦截器是在 Spring容器内的,是 Spring框架支持的。<br>    使用的资源不同: 同其他的代码块一样,拦截器也是一个 Spring的组件,归 Spring管理,配置在 Spring文件中,因此能使用 Spring里的任何资源、对象,例如 Service对象、数据源、事务管理等,通过loC注入到拦截器即可;而 Filter则不能。<br>    深度不同: Filter在只在 Servlet前后起作用。而拦截器能够深入到方法前后、异常抛出前后等,因此拦截器的使用具有更大的弹性。所以在 Spring构架的程序中要优先使用拦截器。</p>
+<p> 所以根据不同我们可以知道，如果是在spring架构的程序里的话，优先使用拦截器。它的粒度更小，弹性大。</p>
+<ul>
+<li>如果是非spring项目，那么拦截器不能用，只能使用过滤器。</li>
+<li>如果是处理controller前后，既可以使用拦截器也可以使用过滤器。</li>
+<li><p>如果是处理dispaterServlet前后，只能使用过滤器。</p>
+<p>过滤器的使用：字符编码过滤器，cors跨域过滤器</p>
+<img src="/2020/07/15/springMvc/filter.jpg" title="filter的处理逻辑">
+<p>拦截器的使用： 创建一个拦截器的类，它实现了HandlerInterceptor的接口，这个接口有三个函数preHandle  ，postHandle， afterCompletion。preHandle是在执行handlerAdapter.handle之前执行的，它有一个返回值，如果是true才会继续执行controller的逻辑，false的话就不继续执行了，直接返回请求。postHandle是在请求处理之后进行调用，但是在视图被渲染之前。afterCompletion是在DispatcherServlet 渲染了对应的视图之后执行（主要是用于进行资源清理工作）最后，在创建一个类实现 WebMvcConfigurer 接口，在里面注册拦截器。这里面注意的是用**来表示任意</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Myptor myptor;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 多个拦截器组成一个拦截器链</span></span><br><span class="line">    <span class="comment">// addPathPatterns 用于添加拦截规则</span></span><br><span class="line">    <span class="comment">// excludePathPatterns 用户排除拦截</span></span><br><span class="line">    registry.addInterceptor(myptor).addPathPatterns(<span class="string">"/**"</span>).excludePathPatterns(<span class="string">"/**/*.js"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Oauth2</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">springboot</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jwt</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">servlet</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/15/springMvc/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/06/04/computer-network-study-part-one/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">computer-network-study-part-one</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -236,9 +357,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
